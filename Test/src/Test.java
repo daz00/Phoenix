@@ -7,6 +7,7 @@ public class Test {
 		//või mitte :D
 		//... lalalalalallaalalalala
 		//Mine sa tea :D
+		//
 	}
 
 }
