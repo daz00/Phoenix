@@ -24,7 +24,7 @@ public class writeproperties {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+//
 	}
 }
 	
