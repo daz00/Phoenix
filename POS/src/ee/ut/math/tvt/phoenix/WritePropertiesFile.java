@@ -16,7 +16,7 @@ public class WritePropertiesFile {
 
 			File file = new File("test2.properties");
 			FileOutputStream fileOut = new FileOutputStream(file);
-			properties.store(fileOut, "Favorite Things");
+			properties.store(fileOut, "Favorite Thing");
 			fileOut.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
