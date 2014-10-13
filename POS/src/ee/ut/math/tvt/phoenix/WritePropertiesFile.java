@@ -10,13 +10,15 @@ public class WritePropertiesFile {
 	public static void main(String[] args) {
 		try {
 			Properties properties = new Properties();
-			properties.setProperty("favoriteAnimal", "marmot");
-			properties.setProperty("favoriteContinent", "Antarctica");
-			properties.setProperty("favoritePerson", "Nicole");
+			properties.setProperty("build.revision.number", "0");
+			properties.setProperty("build.minor.number", "0");
+			properties.setProperty("build.major.number", "0");
+			properties.setProperty("build.number", "build.major.number+.+build.minor.number+.+build.revision.number");
+			
 
-			File file = new File("test2.properties");
+			File file = new File("version.properties");
 			FileOutputStream fileOut = new FileOutputStream(file);
-			properties.store(fileOut, "Favorite Things");
+			properties.store(fileOut, "Version");
 			fileOut.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
