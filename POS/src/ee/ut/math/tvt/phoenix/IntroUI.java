@@ -78,6 +78,9 @@ public class IntroUI extends JFrame {
 			contentPane.add(window, BorderLayout.CENTER);
 			contentPane.setSize(new Dimension(200,200));
 			
+			add(window);
+			pack();
+			
 			
 
 
