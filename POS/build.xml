@@ -34,7 +34,7 @@
 
 	<target name="dist">
 		<mkdir dir="POS/build/jar"/>
-		<jar destfile="build/jar/Phoenix.jar" basedir="" includes="POS/**">
+		<jar destfile="build/jar/Phoenix.jar" basedir="POS">
 			<manifest>
 				<attribute name="Main-Class" value="ee.ut.math.tvt.phoenix.Intro" />
 			</manifest>
@@ -70,23 +70,9 @@
 		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
 		<antcall target="build"/>
 	</target>
+	
 	<target name="Intro">
 		<java classname="ee.ut.math.tvt.phoenix.Intro" failonerror="true" fork="yes">
-			<classpath refid="POS.classpath"/>
-		</java>
-	</target>
-	<target name="katse">
-		<java classname="ee.ut.math.tvt.phoenix.katse" failonerror="true" fork="yes">
-			<classpath refid="POS.classpath"/>
-		</java>
-	</target>
-	<target name="writeproperties">
-		<java classname="ee.ut.math.tvt.phoenix.writeproperties" failonerror="true" fork="yes">
-			<classpath refid="POS.classpath"/>
-		</java>
-	</target>
-	<target name="WritePropertiesFile">
-		<java classname="ee.ut.math.tvt.phoenix.WritePropertiesFile" failonerror="true" fork="yes">
 			<classpath refid="POS.classpath"/>
 		</java>
 	</target>
