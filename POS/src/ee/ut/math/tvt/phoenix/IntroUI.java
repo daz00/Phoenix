@@ -1,25 +1,20 @@
 package ee.ut.math.tvt.phoenix;
 
-//import com.jgoodies.looks.windows.WindowsLookAndFeel;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
-
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 
 // GUI 
 
@@ -27,9 +22,7 @@ public class IntroUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-
 	public IntroUI() {
-
 
 		setTitle("Intro");
 
@@ -48,8 +41,10 @@ public class IntroUI extends JFrame {
 			prop2.load(input2);
 
 
-			// get the .properties values 
+			DateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+			Calendar cal = Calendar.getInstance();
 
+			// get the .properties values 
 			JLabel name = new JLabel("Team name: "+ prop.getProperty("teamName"));
 			JLabel leader = new JLabel("Team leader: "+ prop.getProperty("teamLeader"));
 			JLabel email = new JLabel("Team name: "+ prop.getProperty("leaderEmail"));
@@ -58,12 +53,11 @@ public class IntroUI extends JFrame {
 					+ prop2.getProperty("build.major.number") + "."
 					+ prop2.getProperty("build.revision.number") + "."
 					+ prop2.getProperty("build.minor.number"));
-			
+
 			// Open the link where the logo is (We should probably move it to lib at some point)
 			URL logo_url = new URL(prop.getProperty("teamLogo"));
 			BufferedImage image = ImageIO.read(logo_url);
 			JLabel logo = new JLabel(new ImageIcon(image));
-
 
 			JPanel window = new JPanel();
 			window.setLayout(new BoxLayout(window, BoxLayout.PAGE_AXIS));
@@ -74,17 +68,9 @@ public class IntroUI extends JFrame {
 			window.add(members);
 			window.add(version);
 
-			Container contentPane = getContentPane();
-			contentPane.add(window, BorderLayout.CENTER);
-			contentPane.setSize(new Dimension(200,200));
-			
 			add(window);
 			pack();
-			
-			
-
-
-
+			setLocationRelativeTo(null);
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -97,11 +83,5 @@ public class IntroUI extends JFrame {
 				}
 			}
 		}
-
-
 	}
-
-
 }
-
-
