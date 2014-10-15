@@ -1,45 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="Intro" default="build">
 
-<project basedir="." default="build" name="POS">
-	<property environment="env"/>
-	<property name="debuglevel" value="source,lines,vars"/>
-	<property name="target" value="1.2"/>
-	<property name="source" value="1.3"/>
+	<!-- Definitions of the properties we used during the rest of this script. -->
+
+	<property file="version.properties" />
+	<property file="application.properties" />
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="etc.dir" value="${basedir}/etc" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="main.class" value="ee.ut.math.tvt.phoenix.Intro" />
+	
+	
+	<!-- Classpaths -->
 	<path id="POS.classpath">
-		<pathelement location="bin"/>
-		<pathelement location="etc"/>
-		<pathelement location="lib/jgoodies-common-1.4.0.jar"/>
-		<pathelement location="lib/jgoodies-looks-2.5.2.jar"/>
-		<pathelement location="lib/log4j-1.2.17.jar"/>
+		<pathelement location="${build.classes.dir}"/>
+		<!-- configuration -->
+		<pathelement location="${etc.dir}"/>
+
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
 	</path>
 	
-	<target name="init">
-		<mkdir dir="bin"/>
-		<copy includeemptydirs="false" todir="bin">
-			<fileset dir="src">
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="clean">
-		<delete dir="bin"/>
-	</target>
-	<target depends="clean" name="cleanall"/>
-	<target depends="build-subprojects,build-project" name="build"/>
+	<!-- Build targets -->
+		
+	<target name="build" description="Build the system">
+			<mkdir dir="${build.dir}" />
+			<mkdir dir="${build.classes.dir}" />
+			<javac 
+				srcdir="${src.dir}" 
+				destdir="${build.classes.dir}" 
+				classpathref="POS.classpath" 
+				includeantruntime="false" 
+				debug="true"
+				debuglevel="lines,vars,source"
+				encoding="utf-8"
+				compiler="modern"
+				target="1.7"
+				source="1.7">
+			</javac>
+		</target>
+	
+	<target name="clean" description="Clean up build system results">
+			<delete dir="${build.dir}"/>
+		</target>
 	
 	<target name="run" depends="build" description="Run the template application">
 			<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="POS.classpath" fork="yes" />
 		</target>
 
-	<target name="dist">
-		<mkdir dir="POS/build/jar"/>
-		<jar destfile="build/jar/Phoenix.jar" basedir="POS">
-			<manifest>
-				<attribute name="Main-Class" value="ee.ut.math.tvt.phoenix.Intro" />
-			</manifest>
-		</jar>
-		
+		<target name="dist" description="Makes a jar file" depends="build">
+				<jar destfile="${build.dir}/jar/phoenix.jar" basedir="${build.classes.dir}">
+					<fileset dir="${basedir}">
+									<include name="*.properties" />
+									<include name="etc/*" />
+					
+								</fileset>
+					<manifest>
+									<attribute name="Main-Class" value="${main.class}" />
+									<attribute name="Class-Path" value="./POS"/>
+								</manifest>
+				</jar>
+			
+<!-- This changes the revision number in our properties file -->
 		<propertyfile
 		    file="version.properties"
 		    comment="Makes a change to the current version nr">
@@ -47,33 +73,9 @@
 		</propertyfile>
 	</target>
 
-	<target name="build-subprojects" />
-	<target depends="init" name="build-project">
-		<echo message="${ant.project.name}: ${ant.file}" />
-		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-			<src path="src"/>
-			<classpath refid="POS.classpath"/>
-		</javac>
-	</target>
+	<target name="jrun" depends="dist" description="Run the compiled .jar file">
+			<java jar="${build.dir}/jar/phoenix.jar" fork="true"/>
+		</target>
+
 	
-	<target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-	<target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
-		<copy todir="${ant.library.dir}">
-			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-		</copy>
-		<unzip dest="${ant.library.dir}">
-			<patternset includes="jdtCompilerAdapter.jar"/>
-			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-		</unzip>
-	</target>
-	<target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
-		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-		<antcall target="build"/>
-	</target>
-	
-	<target name="Intro">
-		<java classname="ee.ut.math.tvt.phoenix.Intro" failonerror="true" fork="yes">
-			<classpath refid="POS.classpath"/>
-		</java>
-	</target>
 </project>
