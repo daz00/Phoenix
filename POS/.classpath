@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/lab3-demo/lib/log4j-1.2.17.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="etc"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="lib" path="/lab3-demo/lib/jgoodies-common-1.4.0.jar"/>
 	<classpathentry kind="lib" path="/lab3-demo/lib/jgoodies-looks-2.5.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
