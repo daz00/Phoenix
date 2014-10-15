@@ -59,7 +59,7 @@ public class IntroUI extends JFrame {
 
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 			Calendar cal = Calendar.getInstance();
-			System.out.println(dateFormat.format(cal.getTime())); //2014/08/06 16:00:22
+			
 
 			// get the .properties values 
 

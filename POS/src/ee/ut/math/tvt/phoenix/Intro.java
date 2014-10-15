@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.phoenix;
 
 import org.apache.log4j.Logger;
+
 import ee.ut.math.tvt.phoenix.IntroUI;
 
 public class Intro {
@@ -15,5 +16,7 @@ public class Intro {
 	log.info("Intro started");
 	
 	}
+
+
 	
 }
