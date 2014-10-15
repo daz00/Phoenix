@@ -83,9 +83,6 @@ public class IntroUI extends JFrame {
 			
 			
 
-
-
-
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
