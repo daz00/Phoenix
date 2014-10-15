@@ -1,17 +1,5 @@
 package ee.ut.math.tvt.phoenix;
 
-//import com.jgoodies.looks.windows.WindowsLookAndFeel;
-
-import javafx.scene.shape.Box;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,15 +9,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
-
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
-
-
-
 
 // GUI 
 
@@ -37,9 +22,7 @@ public class IntroUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-
 	public IntroUI() {
-
 
 		setTitle("Intro");
 
@@ -57,12 +40,11 @@ public class IntroUI extends JFrame {
 			prop.load(input);
 			prop2.load(input2);
 
+
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 			Calendar cal = Calendar.getInstance();
-			
 
 			// get the .properties values 
-
 			JLabel name = new JLabel("Team name: "+ prop.getProperty("teamName"));
 			JLabel leader = new JLabel("Team leader: "+ prop.getProperty("teamLeader"));
 			JLabel email = new JLabel("Team name: "+ prop.getProperty("leaderEmail"));
@@ -71,38 +53,24 @@ public class IntroUI extends JFrame {
 					+ prop2.getProperty("build.major.number") + "."
 					+ prop2.getProperty("build.revision.number") + "."
 					+ prop2.getProperty("build.minor.number"));
-			JLabel time = new JLabel(dateFormat.format(cal.getTime()));
-			
+
 			// Open the link where the logo is (We should probably move it to lib at some point)
 			URL logo_url = new URL(prop.getProperty("teamLogo"));
 			BufferedImage image = ImageIO.read(logo_url);
 			JLabel logo = new JLabel(new ImageIcon(image));
-			
-			
-			
 
-			JPanel panel = new JPanel();
-			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-			panel.add(logo);
-			panel.add(name);
-			panel.add(leader);
-			panel.add(email);
-			panel.add(members);
-			panel.add(version);
-			panel.add(time);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			add(panel);
+			JPanel window = new JPanel();
+			window.setLayout(new BoxLayout(window, BoxLayout.PAGE_AXIS));
+			window.add(logo);
+			window.add(name);
+			window.add(leader);
+			window.add(email);
+			window.add(members);
+			window.add(version);
+
+			add(window);
 			pack();
-			
+			setLocationRelativeTo(null);
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -115,11 +83,5 @@ public class IntroUI extends JFrame {
 				}
 			}
 		}
-
-
 	}
-
-
 }
-
-
