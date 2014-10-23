@@ -14,7 +14,8 @@
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="jar.dir" value="${build.dir}/jar" />
-	
+	<property name="target" value="1.8" />
+	<property name="source" value="1.8" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
 
