@@ -82,4 +82,64 @@
 		</java>
 	</target>
 
+	<!-- GIT macrodefinition (Allows us to use commands in other targets) -->
+
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo message="git @{command}" />
+			<exec executable="git" dir="@{dir}">
+				<arg value="@{command}" />
+				<args />
+			</exec>
+		</sequential>
+	</macrodef>
+
+	<!-- Git related targets -->
+
+	<target name="git_commit">
+		<input message="Commit message" addproperty="commit-message" />
+		<echo message="Commiting all changes with message ${commit-message}" />
+		<git command="add">
+			<args>
+				<arg value="-A" />
+			</args>
+		</git>
+		<git command="commit">
+			<args>
+				<arg value="-m ${commit-message}" />
+			</args>
+		</git>
+
+		<git command="push" />
+		<arg value="https://${username}:${password}@github.com/Phoenix.git" />
+	</target>
+
+	<target name="git_tag">
+			<input message="Homework number" addproperty="n" />
+			<input message="Username:" addproperty="username" />
+			<input message="Password:" addproperty="password" />
+			<git command="tag">
+
+				<args>
+					<arg value="-a" />
+					<arg value="homework_${n}" />
+					<arg value="-m" />
+
+					<arg value="Homework ${toString:n}" />
+				</args>
+			</git>
+			<git command="push">
+				<args>
+					<arg value="https://${username}:${password}@github.com/Phoenix/homework_4.git" />
+					<arg value="--tags" />
+				</args>
+
+			</git>
+		</target>
+
+
+
 </project>
