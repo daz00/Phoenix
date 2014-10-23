@@ -5,96 +5,80 @@
 
 	<property file="version.properties" />
 	<property file="application.properties" />
-
-		<property name="main-class" value="ee.ut.math.tvt.phoenix.Intro" />
-		<property file="application.properties" prefix="app" />
-		<property file="version.properties" prefix="version" />
-		<property name="build.dir" value="${basedir}/build" />
-		<property name="src.dir" value="${basedir}/src" />
-		<property name="build.dir" value="build" />
-		<property name="classes.dir" value="${build.dir}/classes" />
-		<property name="jar.dir" value="${build.dir}/jar" />
-		<property name="etc.dir" value="${basedir}/etc" />
-
-		<property name="lib.dir" value="${basedir}/lib" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="main-class" value="ee.ut.math.tvt.phoenix.Intro" />
+	<property file="application.properties" prefix="app" />
+	<property file="version.properties" prefix="version" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="build.dir" value="build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jar" />
 	
-	
+
+	<property name="lib.dir" value="${basedir}/lib" />
+
+
 	<!-- Classpaths -->
 	<path id="POS.classpath">
-		<pathelement location="${classes.dir}"/>
+		<pathelement location="${classes.dir}" />
 		<!-- configuration -->
-		<pathelement location="${lib.dir}"/>
+		<pathelement location="${lib.dir}" />
 
 		<fileset dir="${lib.dir}">
-			<include name="*.jar"/>
+			<include name="*.jar" />
 		</fileset>
 	</path>
-	
 
-	<path id="compile.classpath">
-		<fileset dir="${lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-	</path>
-	
+
 	<!-- Build targets -->
-	
-	
-		
-      <target name="build" description="Build the system">
-      	<mkdir dir="${build.dir}" />
-        <mkdir dir="${classes.dir}" />
-			<javac srcdir="${src.dir}" destdir="${classes.dir}" 
-				debug="true" 
-				debuglevel="${debuglevel}" 
-				encoding="utf-8" 
-				compiler="modern" 
-				target="${target}" 
-				source="${source}" 
-				includeantruntime="false" 
-				classpathref="POS.classpath" />
-			<copy file="${basedir}/lib/log4j.xml" todir="${classes.dir}" overwrite="true" />
-		</target>
-	
+
+
+
+	<target name="build" description="Build the system">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="${debuglevel}" encoding="utf-8" compiler="modern" target="${target}" source="${source}" includeantruntime="false" classpathref="POS.classpath" />
+		<copy file="${basedir}/lib/log4j.xml" todir="${classes.dir}" overwrite="true" />
+	</target>
+
 	<target name="clean" description="Clean up build system results">
-			<delete dir="${build.dir}"/>
-		</target>
-	
+		<delete dir="${build.dir}" />
+	</target>
+
 	<target name="run" depends="build" description="Run the template application">
-			<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="POS.classpath" fork="yes" />
-		</target>
+		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="POS.classpath" fork="yes" />
+	</target>
 
-		<target name="dist" description="Makes a jar file" depends="build">
-				<jar destfile="${build.dir}/jar/phoenix.jar" basedir="${classes.dir}">
-					<zipgroupfileset dir="lib" includes="**/*.jar" />
+	<target name="dist" description="Makes a jar file" depends="build">
+		<jar destfile="${build.dir}/jar/phoenix.jar" basedir="${classes.dir}">
+			<zipgroupfileset dir="lib" includes="**/*.jar" />
 
-								<fileset dir="${basedir}" includes="*.properties" />
+			<fileset dir="${basedir}" includes="*.properties" />
 
-								<manifest>
-									<attribute name="Main-Class" value="${main-class}" />
-								</manifest>
-							</jar>
-			<copy file="lib/log4j.xml" todir="${jar.dir}">
-										</copy>
-			
-<!-- This changes the revision number in our properties file -->
-		<propertyfile
-		    file="version.properties"
-		    comment="Makes a change to the current version nr">
-		  <entry  key="build.revision.number" type = "int" default="" operation="+" value="1"/>
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+		<copy file="lib/log4j.xml" todir="${jar.dir}">
+		</copy>
+
+		<!-- This changes the revision number in our properties file -->
+		<propertyfile file="version.properties" comment="Makes a change to the current version nr">
+			<entry key="build.revision.number" type="int" default="" operation="+" value="1" />
 		</propertyfile>
 	</target>
-	
+
 	<target name="jrun" depends="dist">
-			<java jar="${jar.dir}/Phoenix.jar" fork="true" />
+		<java jar="${jar.dir}/Phoenix.jar" fork="true" />
 	</target>
-	
-<!-- New targets (Homework_4)  -->	
-	
+
+	<!-- New targets (Homework_4)  -->
+
 	<target name="runc" depends="build" description="Run the application (console)">
-		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="test.classpath" fork="yes">
+		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="POS.classpath" fork="yes">
 			<arg value="console" />
 		</java>
 	</target>
-	
+
 </project>
