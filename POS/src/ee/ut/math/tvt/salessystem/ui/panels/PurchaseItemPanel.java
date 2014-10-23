@@ -32,6 +32,7 @@ public class PurchaseItemPanel extends JPanel {
     private JTextField quantityField;
     private JTextField nameField;
     private JTextField priceField;
+    private JTextField sumField;
 
     private JButton addItemButton;
 
@@ -86,6 +87,7 @@ public class PurchaseItemPanel extends JPanel {
         quantityField = new JTextField("1");
         nameField = new JTextField();
         priceField = new JTextField();
+        sumField = new JTextField();
 
         // Fill the dialog fields if the bar code text field loses focus
         barCodeField.addFocusListener(new FocusListener() {
@@ -99,6 +101,7 @@ public class PurchaseItemPanel extends JPanel {
 
         nameField.setEditable(false);
         priceField.setEditable(false);
+        sumField.setEditable(false);
 
         // == Add components to the panel
 
@@ -117,6 +120,10 @@ public class PurchaseItemPanel extends JPanel {
         // - price
         panel.add(new JLabel("Price:"));
         panel.add(priceField);
+        
+        // - sum
+        panel.add(new JLabel("Sum:"));
+        panel.add(sumField);
 
         // Create and add the button
         addItemButton = new JButton("Add to cart");
@@ -134,11 +141,14 @@ public class PurchaseItemPanel extends JPanel {
     // Fill dialog with data from the "database".
     public void fillDialogFields() {
         StockItem stockItem = getStockItemByBarcode();
-
+        int sum;
         if (stockItem != null) {
             nameField.setText(stockItem.getName());
             String priceString = String.valueOf(stockItem.getPrice());
             priceField.setText(priceString);
+            sum = (int)stockItem.getPrice() * (int)stockItem.getQuantity();
+            String sumString = String.valueOf(sum);
+            sumField.setText(sumString);
         } else {
             reset();
         }
@@ -193,6 +203,7 @@ public class PurchaseItemPanel extends JPanel {
         quantityField.setText("1");
         nameField.setText("");
         priceField.setText("");
+        sumField.setText("");
     }
 
     /*
