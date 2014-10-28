@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -10,9 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.List;
 import java.util.NoSuchElementException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,11 +34,11 @@ public class PurchaseItemPanel extends JPanel {
     // Text field on the dialogPane
     private JTextField barCodeField;
     private JTextField quantityField;
-    private JTextField nameField;
     private JTextField priceField;
     private JTextField sumField;
 
     private JButton addItemButton;
+    private JComboBox<String> items;
 
     // Warehouse model
     private SalesSystemModel model;
@@ -79,13 +83,14 @@ public class PurchaseItemPanel extends JPanel {
 
         // Create the panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        panel.setLayout(new GridLayout(6, 2));
         panel.setBorder(BorderFactory.createTitledBorder("Product"));
+    
+
 
         // Initialize the textfields
         barCodeField = new JTextField();
         quantityField = new JTextField("1");
-        nameField = new JTextField();
         priceField = new JTextField();
         sumField = new JTextField();
 
@@ -99,12 +104,20 @@ public class PurchaseItemPanel extends JPanel {
             }
         });
 
-        nameField.setEditable(false);
         priceField.setEditable(false);
         sumField.setEditable(false);
 
         // == Add components to the panel
+        List<StockItem> stockItems = model.getWarehouseTableModel().getTableRows();
+        items = new JComboBox<String>();
+        for(int i = 0; i<stockItems.size();i=i+1){
+        	items.addItem(stockItems.get(i).getName());
+        }
+        panel.add(new JLabel("Products:"));
+        items.setEnabled(false);
+        panel.add(items);
 
+        
         // - bar code
         panel.add(new JLabel("Bar code:"));
         panel.add(barCodeField);
@@ -113,9 +126,6 @@ public class PurchaseItemPanel extends JPanel {
         panel.add(new JLabel("Amount:"));
         panel.add(quantityField);
 
-        // - name
-        panel.add(new JLabel("Name:"));
-        panel.add(nameField);
 
         // - price
         panel.add(new JLabel("Price:"));
@@ -124,6 +134,14 @@ public class PurchaseItemPanel extends JPanel {
         // - sum
         //panel.add(new JLabel("Sum:"));
         //panel.add(sumField);
+        
+        items.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+            	StockItem stock = model.getWarehouseTableModel().getItemById(items.getSelectedIndex()+1);
+            	barCodeField.setText(stock.getBarCode().toString());
+            	priceField.setText(String.valueOf(stock.getPrice()));
+            }
+        });
 
         // Create and add the button
         addItemButton = new JButton("Add to cart");
@@ -144,7 +162,6 @@ public class PurchaseItemPanel extends JPanel {
         int sum;
         //if (stockItem.getQuantity() != 0) {
         if (stockItem != null) {
-            nameField.setText(stockItem.getName());
             String priceString = String.valueOf(stockItem.getPrice());
             priceField.setText(priceString);
             sum = (int)stockItem.getPrice() * (int)stockItem.getQuantity();
@@ -194,6 +211,7 @@ public class PurchaseItemPanel extends JPanel {
         this.addItemButton.setEnabled(enabled);
         this.barCodeField.setEnabled(enabled);
         this.quantityField.setEnabled(enabled);
+        this.items.setEnabled(enabled);
     }
 
     /**
@@ -202,9 +220,9 @@ public class PurchaseItemPanel extends JPanel {
     public void reset() {
         barCodeField.setText("");
         quantityField.setText("1");
-        nameField.setText("");
         priceField.setText("");
         sumField.setText("");
+
     }
 
     /*

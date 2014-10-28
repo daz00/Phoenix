@@ -54,6 +54,10 @@ public class StockItem implements Cloneable, DisplayableItem {
     public String getName() {
         return name;
     }
+    
+    public Long getBarCode(){
+    	return id;
+    }
 
     public void setName(String name) {
         this.name = name;
