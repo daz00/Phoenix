@@ -40,7 +40,7 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${classes.dir}" />
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="${debuglevel}" encoding="utf-8" compiler="modern" target="${target}" source="${source}" includeantruntime="false" classpathref="POS.classpath" />
-		<copy file="${basedir}/lib/log4j.xml" todir="${classes.dir}" overwrite="true" />
+		
 	</target>
 
 	<target name="clean" description="Clean up build system results">
@@ -68,8 +68,8 @@
 				<attribute name="Main-Class" value="${main-class}" />
 			</manifest>
 		</jar>
-		<copy file="lib/log4j.xml" todir="${jar.dir}">
-		</copy>
+
+		
 
 		<!-- This changes the revision number in our properties file -->
 		<propertyfile file="version.properties" comment="Makes a change to the current version nr">
