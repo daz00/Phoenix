@@ -147,6 +147,12 @@
 			</git>
 		</target>
 
-
+	 <java
+	          classname="ee.ut.math.tvt.phoenix.Intro"
+	            classpathref="POS.classpath"
+	            fork="yes">
+	          <jvmarg value="-Xdebug" />
+	          <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
+	        </java>
 
 </project>
