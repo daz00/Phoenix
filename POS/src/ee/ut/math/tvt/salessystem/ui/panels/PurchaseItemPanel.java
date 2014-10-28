@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -183,6 +184,7 @@ public class PurchaseItemPanel extends JPanel {
         } catch (NoSuchElementException ex) {
             return null;
         }
+        
     }
 
     /**
@@ -198,8 +200,18 @@ public class PurchaseItemPanel extends JPanel {
             } catch (NumberFormatException ex) {
                 quantity = 1;
             }
-            model.getCurrentPurchaseTableModel()
-                .addItem(new SoldItem(stockItem, quantity));
+            if (quantity > stockItem.getQuantity()) {
+
+				JOptionPane.showMessageDialog(null, "There isn't enough "
+						+ stockItem.getName() + " in the stock.");
+
+			} else {
+				model.getCurrentPurchaseTableModel().addItem(
+						new SoldItem(stockItem, quantity));
+
+				stockItem.setQuantity(stockItem.getQuantity()-quantity);;
+
+			}
         }
     }
 

@@ -40,10 +40,6 @@ public class IntroUI extends JFrame {
 			prop.load(input);
 			prop2.load(input2);
 
-
-			DateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-			Calendar cal = Calendar.getInstance();
-
 			// get the .properties values 
 			JLabel name = new JLabel("Team name: "+ prop.getProperty("teamName"));
 			JLabel leader = new JLabel("Team leader: "+ prop.getProperty("teamLeader"));
@@ -58,7 +54,6 @@ public class IntroUI extends JFrame {
 			URL logo_url = new URL(prop.getProperty("teamLogo"));
 			BufferedImage image = ImageIO.read(logo_url);
 			JLabel logo = new JLabel(new ImageIcon(image));
-			JLabel time = new JLabel(dateFormat.format(cal.getTime()));
 
 			JPanel window = new JPanel();
 			window.setLayout(new BoxLayout(window, BoxLayout.PAGE_AXIS));
@@ -68,7 +63,7 @@ public class IntroUI extends JFrame {
 			window.add(email);
 			window.add(members);
 			window.add(version);
-			window.add(time);
+		
 
 			add(window);
 			pack();
