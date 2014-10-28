@@ -122,8 +122,8 @@ public class PurchaseItemPanel extends JPanel {
         panel.add(priceField);
         
         // - sum
-        panel.add(new JLabel("Sum:"));
-        panel.add(sumField);
+        //panel.add(new JLabel("Sum:"));
+        //panel.add(sumField);
 
         // Create and add the button
         addItemButton = new JButton("Add to cart");
