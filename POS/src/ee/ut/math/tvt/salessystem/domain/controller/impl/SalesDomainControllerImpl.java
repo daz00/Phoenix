@@ -18,6 +18,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		// cannot buy chupa-chups
 		throw new VerificationFailedException("Underaged!");
 		// XXX - Save purchase
+		
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {				
@@ -35,13 +36,15 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 		StockItem chips = new StockItem(1l, "Lays chips", "Potato chips", 11.0, 5);
 		StockItem chupaChups = new StockItem(2l, "Chupa-chups", "Sweets", 8.0, 8);
-	    StockItem frankfurters = new StockItem(3l, "Frankfurters", "Beer sauseges", 15.0, 12);
+	    StockItem frankfurters = new StockItem(3l, "Frankfurters", "Beer sausages", 15.0, 12);
 	    StockItem beer = new StockItem(4l, "Free Beer", "Student's delight", 0.0, 100);
+	    StockItem soda = new StockItem(5l, "Sprite", "Soda", 10.0, 0);
 
 		dataset.add(chips);
 		dataset.add(chupaChups);
 		dataset.add(frankfurters);
 		dataset.add(beer);
+		dataset.add(soda);
 		
 		return dataset;
 	}

@@ -36,7 +36,7 @@ public interface SalesDomainController {
     public void cancelCurrentPurchase() throws VerificationFailedException;
 
     /**
-     * Commit business transaction - purchsae of goods.
+     * Commit business transaction - purchase of goods.
      * 
      * @param goods
      *            Goods that the buyer has chosen to buy.

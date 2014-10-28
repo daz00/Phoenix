@@ -142,6 +142,7 @@ public class PurchaseItemPanel extends JPanel {
     public void fillDialogFields() {
         StockItem stockItem = getStockItemByBarcode();
         int sum;
+        //if (stockItem.getQuantity() != 0) {
         if (stockItem != null) {
             nameField.setText(stockItem.getName());
             String priceString = String.valueOf(stockItem.getPrice());
@@ -153,7 +154,7 @@ public class PurchaseItemPanel extends JPanel {
             reset();
         }
     }
-
+    
     // Search the warehouse for a StockItem with the bar code entered
     // to the barCode textfield.
     private StockItem getStockItemByBarcode() {
