@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -23,9 +24,14 @@ import org.apache.log4j.Logger;
  * Encapsulates everything that has to do with the purchase tab (the tab
  * labelled "Point-of-sale" in the menu).
  */
-public class PurchaseTab {
+public class PurchaseTab extends JFrame {
 
-  private static final Logger log = Logger.getLogger(PurchaseTab.class);
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+private static final Logger log = Logger.getLogger(PurchaseTab.class);
 
   private final SalesDomainController domainController;
 
@@ -167,6 +173,8 @@ public class PurchaseTab {
   }
 
 
+  
+  
   /** Event handler for the <code>submit purchase</code> event. */
   protected void submitPurchaseButtonClicked() {
     log.info("Sale complete");
@@ -174,16 +182,26 @@ public class PurchaseTab {
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
       domainController.submitCurrentPurchase(
           model.getCurrentPurchaseTableModel().getTableRows()
-      );
+         );
+      
+      //add(window);
+		//pack();
+		
       endSale();
       model.getCurrentPurchaseTableModel().clear();
     } catch (VerificationFailedException e1) {
       log.error(e1.getMessage());
     }
+ 
+   
+  JFrame window = new JFrame();
+  JTextField bla = new JTextField();
+  
+	window.add(bla);
+	window.setVisible(true);
+	setLocationRelativeTo(null);
+
   }
-
-
-
   /* === Helper methods that bring the whole purchase-tab to a certain state
    *     when called.
    */
