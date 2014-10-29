@@ -28,7 +28,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 
 
-public class StockTab extends StockTableModel {
+public class StockTab {
 
 	private static final long serialVersionUID = 1L;
 	JTextField barCodeField;
@@ -152,7 +152,6 @@ public class StockTab extends StockTableModel {
 				Double.parseDouble(priceField.getText()),
 				Integer.parseInt(quantityField.getText()));
 		model.getWarehouseTableModel().addItem(addedItem);
-		fireTableDataChanged();
 	}
 
   // table of the wareshouse stock
