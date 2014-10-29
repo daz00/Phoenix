@@ -44,7 +44,7 @@ public class SalesSystemUI extends JFrame {
     this.model = new SalesSystemModel(domainController);
 
     // Create singleton instances of the tab classes
-    historyTab = new HistoryTab();
+    historyTab = new HistoryTab(model);
     stockTab = new StockTab(model);
     purchaseTab = new PurchaseTab(domainController, model);
 

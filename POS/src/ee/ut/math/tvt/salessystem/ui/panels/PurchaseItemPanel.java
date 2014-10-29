@@ -188,7 +188,7 @@ public class PurchaseItemPanel extends JPanel {
     }
 
     /**
-     * Add new item to the cart.
+     * Add new item to the cart (And check whether or not there is enough to add)
      */
     public void addItemEventHandler() {
         // add chosen item to the shopping cart.

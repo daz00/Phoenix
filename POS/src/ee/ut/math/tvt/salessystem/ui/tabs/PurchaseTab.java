@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -9,12 +11,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -44,8 +49,7 @@ private static final Logger log = Logger.getLogger(PurchaseTab.class);
   private PurchaseItemPanel purchasePane;
 
   private SalesSystemModel model;
-
-
+ 
   public PurchaseTab(SalesDomainController controller,
       SalesSystemModel model)
   {
@@ -139,6 +143,55 @@ private static final Logger log = Logger.getLogger(PurchaseTab.class);
     return b;
   }
 
+//Save order to History tab:
+  public void saveOrder() {
+	  model.getHistoryTableModel().addItem(new HistoryItem(
+                model.getCurrentPurchaseTableModel().getTableRows()))
+                ;
+	}
+// Add all the prices together 
+  public double getTotalSum() {
+      double sum = 0;
+      int row = model.getCurrentPurchaseTableModel().getRowCount();
+      int column = model.getCurrentPurchaseTableModel().getColumnCount() - 1;
+      for (int i = 0; i < row; i++) {
+              double add = (double) model.getCurrentPurchaseTableModel()
+                              .getValueAt(i, column);
+              sum += add;
+
+      }
+      return sum;
+
+}
+  public void confirmWin(){
+	  JPanel panel = new JPanel();
+	  JFrame window = new JFrame();
+	  panel.setLayout(new GridLayout(6, 2));
+      panel.setBorder(BorderFactory.createTitledBorder("Purchase information"));
+
+	    // Layout
+	    panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	    panel.setLayout(new GridBagLayout());
+
+        // - amount
+        double sum = getTotalSum();
+        panel.add(new JLabel("Total amount to be paid: " + sum + "\n"));
+        
+        // - bar code
+        panel.add(new JLabel("Enter the $$$ :"));
+        JTextField input = new JTextField();
+        panel.add(input);
+        
+
+	    // Add the main purchase-panel
+        panel.setVisible(true);
+        setLocationRelativeTo(null);
+        pack();
+	  
+
+	   
+  }
+
 
 
 
@@ -178,28 +231,25 @@ private static final Logger log = Logger.getLogger(PurchaseTab.class);
   /** Event handler for the <code>submit purchase</code> event. */
   protected void submitPurchaseButtonClicked() {
     log.info("Sale complete");
+    saveOrder();
     try {
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
       domainController.submitCurrentPurchase(
           model.getCurrentPurchaseTableModel().getTableRows()
          );
-      
-      //add(window);
-		//pack();
-		
       endSale();
+      
       model.getCurrentPurchaseTableModel().clear();
     } catch (VerificationFailedException e1) {
       log.error(e1.getMessage());
     }
- 
-   
-  JFrame window = new JFrame();
-  JTextField bla = new JTextField();
-  
-	window.add(bla);
-	window.setVisible(true);
-	setLocationRelativeTo(null);
+    confirmWin(); //Draws the confirmation window
+//    JFrame window = new JFrame();
+//    JTextField bla = new JTextField();
+//  
+//	window.add(bla);
+//	window.setVisible(true);
+//	setLocationRelativeTo(null);
 
   }
   /* === Helper methods that bring the whole purchase-tab to a certain state
@@ -207,7 +257,7 @@ private static final Logger log = Logger.getLogger(PurchaseTab.class);
    */
 
   // switch UI to the state that allows to proceed with the purchase
-  private void startNewSale() {
+    private void startNewSale() {
     purchasePane.reset();
 
     purchasePane.setEnabled(true);
