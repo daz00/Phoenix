@@ -155,37 +155,40 @@ private static final Logger log = Logger.getLogger(PurchaseTab.class);
       int row = model.getCurrentPurchaseTableModel().getRowCount();
       int column = model.getCurrentPurchaseTableModel().getColumnCount() - 1;
       for (int i = 0; i < row; i++) {
-              double add = (double) model.getCurrentPurchaseTableModel()
+              double money = (double) model.getCurrentPurchaseTableModel()
                               .getValueAt(i, column);
-              sum += add;
+              sum += money;
 
       }
       return sum;
 
 }
   public void confirmWin(){
-	  JPanel panel = new JPanel();
 	  JFrame window = new JFrame();
-	  panel.setLayout(new GridLayout(6, 2));
+	  setTitle("Purchase information");
+	  JPanel panel = new JPanel();
+	  JPanel panel2 = new JPanel();
+	  
+	  window.setLayout(new GridLayout(6, 6));
       panel.setBorder(BorderFactory.createTitledBorder("Purchase information"));
-
-	    // Layout
-	    panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-	    panel.setLayout(new GridBagLayout());
-
+      panel2.setBorder(BorderFactory.createTitledBorder("Payment"));
+      
         // - amount
         double sum = getTotalSum();
-        panel.add(new JLabel("Total amount to be paid: " + sum + "\n"));
+        panel.add(new JLabel("Total amount to be paid: " + sum));
         
         // - bar code
-        panel.add(new JLabel("Enter the $$$ :"));
+        panel2.add(new JLabel("Enter the amount paid :"));
         JTextField input = new JTextField();
-        panel.add(input);
+        panel2.add(input);
         
 
-	    // Add the main purchase-panel
-        panel.setVisible(true);
-        setLocationRelativeTo(null);
+	    // Fill in the window and its details
+        window.setSize(400, 300);
+        window.add(panel);
+        window.add(panel2);
+        window.setVisible(true);
+        window.setLocationRelativeTo(null);
         pack();
 	  
 
