@@ -112,7 +112,6 @@ public class HistoryTab extends JPanel {
         final JPanel panel = new JPanel();
         final JTable table = new JTable(model.getHistoryTableModel());
         int rida = 0;
-        System.out.print(rida);
         
        
     

@@ -103,7 +103,7 @@
 		</sequential>
 	</macrodef>
 
-	<!-- Git related awesome targets -->
+	<!-- Git related targets -->
 
 	<target name="git_commit">
 		<input message="Commit message" addproperty="commit-message" />
