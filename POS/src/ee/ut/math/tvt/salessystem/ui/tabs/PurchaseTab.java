@@ -53,6 +53,8 @@ public class PurchaseTab extends JFrame {
 	private JButton submitPayment;
 
 	private JButton cancelPayment;
+	
+	//private JLabel changelabel;
 
 
 
@@ -174,39 +176,55 @@ public class PurchaseTab extends JFrame {
 		setTitle("Purchase information");
 		JPanel panel = new JPanel();
 		JPanel panel2 = new JPanel();
-		JPanel panel3 = new JPanel();
+		final JPanel panel3 = new JPanel();
+		JPanel panel4 = new JPanel();
 
 		window.setLayout(new GridLayout(6, 6));
 		panel.setBorder(BorderFactory.createTitledBorder("Purchase information"));
 		panel2.setBorder(BorderFactory.createTitledBorder("Payment"));
 		panel3.setBorder(BorderFactory.createTitledBorder("Change"));
+		panel4.setBorder(BorderFactory.createTitledBorder("Buttons"));
 
 		// - amount
-		double sum = getTotalSum();
+		final double sum = getTotalSum();
 		panel.add(new JLabel("Total amount to be paid: " + sum));
 
 		// - bar code
-		panel2.add(new JLabel("Enter the amount paid: "));
-		JTextField input = new JTextField(20);
+		panel2.add(new JLabel("Enter the amount paid (and press enter): "));
+		final JTextField input = new JTextField(20);
 		panel2.add(input);
 
 		/** not working change code
 		 * 
 		 * actionPerformed(evt,doubleinput);
-
        double doublechange = doubleinput-sum;
-        panel3.add(new JLabel("Change: " + doublechange));
+        panel4.add(new JLabel("Change: " + doublechange));
 		 **/
-		panel3.setLayout(new GridBagLayout());
+		
+		
+		final JLabel changelabel = new JLabel("");
+		panel3.add(changelabel);
+		
+		input.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				log.info("amount paid is: " + input.getText());
+				double doublechange = Integer.parseInt(input.getText()) - sum;
+				log.info("change is: " + doublechange);
+				changelabel.setText("Change: " + doublechange);
+				//System.out.println("The entered text is: " + input.getText());
+			}
+		});
+		
+		panel4.setLayout(new GridBagLayout());
 		GridBagConstraints gc = getConstraintsForMenuButtons();
 
 		submitPayment = createNewSubmitButton();
 		cancelPayment = createNewCancelButton();
 
 		// Add the buttons to the panel
-		panel.add(submitPayment, gc);
-		panel.add(cancelPayment, gc);
-
+		panel4.add(submitPayment, gc);
+		panel4.add(cancelPayment, gc);
 
 
 		// Fill in the window and its details
@@ -214,6 +232,7 @@ public class PurchaseTab extends JFrame {
 		window.add(panel);
 		window.add(panel2);
 		window.add(panel3);
+		window.add(panel4);
 		window.setVisible(true);
 		window.setLocationRelativeTo(null);
 		pack();  
