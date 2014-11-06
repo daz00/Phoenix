@@ -53,8 +53,8 @@ public class PurchaseTab extends JFrame {
 	private JButton submitPayment;
 
 	private JButton cancelPayment;
-	
-	//private JLabel changelabel;
+
+	private JFrame window;
 
 
 
@@ -172,7 +172,7 @@ public class PurchaseTab extends JFrame {
 
 	}
 	public void confirmWin(){
-		JFrame window = new JFrame();
+		window = new JFrame();
 		setTitle("Purchase information");
 		JPanel panel = new JPanel();
 		JPanel panel2 = new JPanel();
@@ -200,28 +200,36 @@ public class PurchaseTab extends JFrame {
        double doublechange = doubleinput-sum;
         panel4.add(new JLabel("Change: " + doublechange));
 		 **/
-		
-		
+
+
 		final JLabel changelabel = new JLabel("");
 		panel3.add(changelabel);
-		
+
 		input.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				log.info("amount paid is: " + input.getText());
-				double doublechange = Integer.parseInt(input.getText()) - sum;
-				log.info("change is: " + doublechange);
-				changelabel.setText("Change: " + doublechange);
+				double doublechange = Double.parseDouble(input.getText()) - sum;
+				if (doublechange >= 0) {
+					log.info("change is: " + doublechange);
+					changelabel.setText("Change: " + doublechange);
+				}
+				else {
+					log.error("not enough paid");
+					input.setText("");
+					changelabel.setText("");
+				}
 				//System.out.println("The entered text is: " + input.getText());
 			}
 		});
-		
+
 		panel4.setLayout(new GridBagLayout());
 		GridBagConstraints gc = getConstraintsForMenuButtons();
 
 		submitPayment = createNewSubmitButton();
 		cancelPayment = createNewCancelButton();
-
+		
+			
 		// Add the buttons to the panel
 		panel4.add(submitPayment, gc);
 		panel4.add(cancelPayment, gc);
@@ -295,6 +303,7 @@ public class PurchaseTab extends JFrame {
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
+		window.dispose();
 	}
 
 
@@ -313,7 +322,7 @@ public class PurchaseTab extends JFrame {
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
-
+		window.dispose();
 	}
 
 
