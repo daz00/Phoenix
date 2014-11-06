@@ -16,8 +16,14 @@
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="target" value="1.8" />
 	<property name="source" value="1.8" />
-
 	<property name="lib.dir" value="${basedir}/lib" />
+
+	<!-- database variables -->
+	<property name="data.dir" value="${basedir}/data" />
+	<property name="db.file" value="${data.dir}/POSdb" />
+	<property name="db.alias" value="POS" />
+	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
+	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
 
 
 	<!-- Classpaths -->
@@ -25,8 +31,24 @@
 		<pathelement location="${classes.dir}" />
 		<!-- configuration -->
 		<pathelement location="${lib.dir}" />
+		<!-- configuration -->
+		<pathelement location="${conf.dir}" />
+
+		<fileset dir="${lib.hibernate.dir}">
+			<include name="*.jar" />
+		</fileset>
 
 		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.hibernate.dir}">
 			<include name="*.jar" />
 		</fileset>
 	</path>
@@ -40,7 +62,7 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${classes.dir}" />
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="${debuglevel}" encoding="utf-8" compiler="modern" target="${target}" source="${source}" includeantruntime="false" classpathref="POS.classpath" />
-		
+
 	</target>
 
 	<target name="clean" description="Clean up build system results">
@@ -48,14 +70,11 @@
 	</target>
 
 	<target name="run" depends="build" description="Run the template application">
-	<java
-	          classname="ee.ut.math.tvt.phoenix.Intro"
-	            classpathref="POS.classpath"
-	            fork="yes">
-	          <jvmarg value="-Xdebug" />
-	          <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
-	        </java>
-		</target>
+		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="POS.classpath" fork="yes">
+			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
+		</java>
+	</target>
 
 	<target name="dist" description="Makes a jar file" depends="build">
 		<jar destfile="${build.dir}/jar/phoenix.jar" basedir="${classes.dir}">
@@ -68,7 +87,7 @@
 			</manifest>
 		</jar>
 
-		
+
 
 		<!-- This changes the revision number in our properties file -->
 		<propertyfile file="version.properties" comment="Makes a change to the current version nr">
@@ -124,26 +143,48 @@
 	</target>
 
 	<target name="git_tag">
-			<input message="Homework number" addproperty="n" />
-			<input message="Username:" addproperty="username" />
-			<input message="Password:" addproperty="password" />
-			<git command="tag">
+		<input message="Homework number" addproperty="n" />
+		<input message="Username:" addproperty="username" />
+		<input message="Password:" addproperty="password" />
+		<git command="tag">
 
-				<args>
-					<arg value="-a" />
-					<arg value="homework_${n}" />
-					<arg value="-m" />
+			<args>
+				<arg value="-a" />
+				<arg value="homework_${n}" />
+				<arg value="-m" />
 
-					<arg value="Homework ${toString:n}" />
-				</args>
-			</git>
-			<git command="push">
-				<args>
-					<arg value="https://${username}:${password}@github.com/Phoenix/homework_4.git" />
-					<arg value="--tags" />
-				</args>
+				<arg value="Homework ${toString:n}" />
+			</args>
+		</git>
+		<git command="push">
+			<args>
+				<arg value="https://${username}:${password}@github.com/Phoenix/homework_4.git" />
+				<arg value="--tags" />
+			</args>
 
-			</git>
-		</target>
+		</git>
+	</target>
+	<!-- Database targets -->
+	
+	<target name="dbmanager" description="Start the HSQLDB manager">
+	        <java
+	            classname="org.hsqldb.util.DatabaseManagerSwing"
+	            classpathref="POS.classpath"
+	            fork="yes"
+	        >
+	            <arg line="--user sa --url ${db.url}" />
+	        </java>
+	    </target>
+
+	    <target name="startdb" description="Start the HSQLDB with the default params">
+	        <java
+	            classname="org.hsqldb.Server"
+	            classpathref="POS.classpath"
+	            fork="yes"
+	        >
+	            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
+	        </java>
+	</target>
+
 
 </project>
