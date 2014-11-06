@@ -190,7 +190,7 @@ public class PurchaseTab extends JFrame {
 		panel.add(new JLabel("Total amount to be paid: " + sum));
 
 		// - bar code
-		panel2.add(new JLabel("Enter the amount paid (and press enter): "));
+		panel2.add(new JLabel("Enter the amount paid: "));
 		final JTextField input = new JTextField(20);
 		panel2.add(input);
 
