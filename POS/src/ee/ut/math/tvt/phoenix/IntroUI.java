@@ -40,7 +40,7 @@ public class IntroUI extends JFrame {
 			// get the .properties values 
 			JLabel name = new JLabel("Team name: "+ prop.getProperty("teamName"));
 			JLabel leader = new JLabel("Team leader: "+ prop.getProperty("teamLeader"));
-			JLabel email = new JLabel("Team name: "+ prop.getProperty("leaderEmail"));
+			JLabel email = new JLabel("Team leader email: "+ prop.getProperty("leaderEmail"));
 			JLabel members = new JLabel("Team members: "+ prop.getProperty("teamMembers"));
 			JLabel version = new JLabel("Software version: "
 					+ prop2.getProperty("build.major.number") + "."
