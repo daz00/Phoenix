@@ -45,5 +45,6 @@ public interface SalesDomainController {
     public void confirmCurrentPurchase(List<SoldItem> goods)
             throws VerificationFailedException;
 
+    public void addStock(StockItem Product);
     
 }

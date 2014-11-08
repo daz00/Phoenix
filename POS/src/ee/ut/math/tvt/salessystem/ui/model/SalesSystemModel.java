@@ -52,5 +52,9 @@ public class SalesSystemModel {
 		return historyTableModel;
 		
 	}
+
+	public Object getDomainController() {
+		return domainController;
+	}
     
 }

@@ -48,4 +48,11 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		
 		return dataset;
 	}
+
+	@Override
+	public void addStock(StockItem Product) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

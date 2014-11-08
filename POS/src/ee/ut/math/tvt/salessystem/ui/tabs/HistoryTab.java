@@ -39,132 +39,132 @@ public class HistoryTab extends JPanel {
 	private SalesSystemModel model;
 	private static final long serialVersionUID = 1L;
 
-    public HistoryTab(SalesSystemModel model) {
-        this.model = model;
-      }
-    public Component draw() {
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	public HistoryTab(SalesSystemModel model) {
+		this.model = model;
+	}
 
-        GridBagLayout gb = new GridBagLayout();
-        GridBagConstraints gc = new GridBagConstraints();
-        panel.setLayout(gb);
+	public Component draw() {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        gc.fill = GridBagConstraints.HORIZONTAL;
-        gc.anchor = GridBagConstraints.NORTH;
-        gc.gridwidth = GridBagConstraints.REMAINDER;
-        gc.weightx = 1.0d;
-        gc.weighty = 0d;
+		GridBagLayout gb = new GridBagLayout();
+		GridBagConstraints gc = new GridBagConstraints();
+		panel.setLayout(gb);
 
-        panel.add(drawStockMenuPane(), gc);
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.anchor = GridBagConstraints.NORTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.weightx = 1.0d;
+		gc.weighty = 0d;
 
-        gc.weighty = 1.0;
-        gc.fill = GridBagConstraints.BOTH;
-        panel.add(drawStockMainPane(), gc);
-        return panel;
-      }
-    private Component drawStockMenuPane() {
-        JPanel panel = new JPanel();
+		panel.add(drawStockMenuPane(), gc);
 
-        GridBagConstraints gc = new GridBagConstraints();
-        GridBagLayout gb = new GridBagLayout();
+		gc.weighty = 1.0;
+		gc.fill = GridBagConstraints.BOTH;
+		panel.add(drawStockMainPane(), gc);
+		return panel;
+	}
 
-        panel.setLayout(gb);
+	private Component drawStockMenuPane() {
+		JPanel panel = new JPanel();
 
-        gc.anchor = GridBagConstraints.NORTHWEST;
-        gc.weightx = 0;
+		GridBagConstraints gc = new GridBagConstraints();
+		GridBagLayout gb = new GridBagLayout();
 
+		panel.setLayout(gb);
 
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        return panel;
-      }
-    
-    public void aken(JTable table, int rowindex){
-    	PurchaseInfoTableModel purchase = new PurchaseInfoTableModel();
-    	JTable infoTable = new JTable(purchase);
-    	JFrame window = new JFrame();
-  	  	window.setTitle("Purchase information");
-  	  	JPanel panel = new JPanel();
-  	  	
+		gc.anchor = GridBagConstraints.NORTHWEST;
+		gc.weightx = 0;
 
-        HistoryItem cur = model.getHistoryTableModel().getTableRows().get(rowindex);
-    	for(SoldItem i : cur.getSold()) {
-    		purchase.addItem(i);
-    	}
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		return panel;
+	}
 
-  	  
-  	  	window.setLayout(new GridLayout(2,2));
+	public void aken(JTable table, int rowindex) {
+		PurchaseInfoTableModel purchase = new PurchaseInfoTableModel();
+		JTable infoTable = new JTable(purchase);
+		JFrame window = new JFrame();
+		window.setTitle("Purchase information");
+		JPanel panel = new JPanel();
+		JPanel panel2 = new JPanel();
+		
+		HistoryItem cur = model.getHistoryTableModel().getTableRows()
+				.get(rowindex);
+		for (SoldItem i : cur.getSold()) {
+			purchase.addItem(i);
+		}
+		JLabel summa = new JLabel("The total sum is " + cur.getTotalSum() + "  euros");
+	
+		
+		window.setLayout(new GridLayout(2,2));
 
-        panel.setBorder(BorderFactory.createTitledBorder("Detailed purchase information"));
-          
-         panel.add(infoTable);
-         window.setSize(400, 300);
-         window.add(panel);
-         
-          window.setVisible(true);
-          window.setLocationRelativeTo(null);
-          window.pack();
-    	}
+		panel.setBorder(BorderFactory
+				.createTitledBorder("Detailed purchase information"));
+		panel2.setBorder(BorderFactory
+				.createTitledBorder("Total sum:"));
 
-                
-     
-    private Component drawStockMainPane() {
-        final JPanel panel = new JPanel();
-        final JTable table = new JTable(model.getHistoryTableModel());
-        int rida = 0;
-        System.out.print(rida);
-        
-       
-    
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                int r = table.rowAtPoint(e.getPoint());
-                if (r >= 0 && r < table.getRowCount()) {
-                    table.setRowSelectionInterval(r, r);
-                } else {
-                	table.clearSelection();
-                }
+		panel.add(infoTable);
+		panel2.add(summa);
+		window.setSize(400, 300);
+		window.add(panel);
+		window.add(panel2);
 
-                final int rowindex = table.getSelectedRow();
-                if (rowindex < 0)
-                    return;
-                else {
-                	 JPopupMenu popupMenu = new JPopupMenu();
-                     JMenuItem info = new JMenuItem("Info");
-                     info.addActionListener(new ActionListener() {
+		window.setVisible(true);
+		window.setLocationRelativeTo(null);
+		window.pack();
+	}
 
-                         @Override
-                         public void actionPerformed(ActionEvent e) {
-                        	 System.out.print(rowindex);
-                             aken(table,rowindex);
-                         }
-                     });
-                	 popupMenu.add(info);
-                     table.setComponentPopupMenu(popupMenu);
-                     table.clearSelection();
-                	
-                }
-            }
-        });
-    
+	private Component drawStockMainPane() {
+		final JPanel panel = new JPanel();
+		final JTable table = new JTable(model.getHistoryTableModel());
 
-        JTableHeader header = table.getTableHeader();
-        header.setReorderingAllowed(false);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
+				if (r >= 0 && r < table.getRowCount()) {
+					table.setRowSelectionInterval(r, r);
+				} else {
+					table.clearSelection();
+				}
 
-        JScrollPane scrollPane = new JScrollPane(table);
+				final int rowindex = table.getSelectedRow();
+				if (rowindex < 0)
+					return;
+				else {
+					JPopupMenu popupMenu = new JPopupMenu();
+					JMenuItem info = new JMenuItem("Info");
+					info.addActionListener(new ActionListener() {
 
-        GridBagConstraints gc = new GridBagConstraints();
-        GridBagLayout gb = new GridBagLayout();
-        gc.fill = GridBagConstraints.BOTH;
-        gc.weightx = 1.0;
-        gc.weighty = 1.0;
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							aken(table, rowindex);
+						}
+					});
+					popupMenu.add(info);
+					table.setComponentPopupMenu(popupMenu);
+					table.clearSelection();
 
-        panel.setLayout(gb);
-        panel.add(scrollPane, gc);
+				}
+			}
+		});
 
-        panel.setBorder(BorderFactory.createTitledBorder("Purchase history"));
-        return panel;
-      }
+		JTableHeader header = table.getTableHeader();
+		header.setReorderingAllowed(false);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+
+		GridBagConstraints gc = new GridBagConstraints();
+		GridBagLayout gb = new GridBagLayout();
+		gc.fill = GridBagConstraints.BOTH;
+		gc.weightx = 1.0;
+		gc.weighty = 1.0;
+
+		panel.setLayout(gb);
+		panel.add(scrollPane, gc);
+
+		panel.setBorder(BorderFactory.createTitledBorder("Purchase history"));
+		return panel;
+	}
 
 }

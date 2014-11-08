@@ -215,7 +215,7 @@ public class PurchaseTab extends JFrame {
 					changelabel.setText("Change: " + doublechange);
 				}
 				else {
-					log.error("not enough paid");
+					log.error("Not enough paid");
 					input.setText("");
 					changelabel.setText("");
 				}
@@ -309,19 +309,19 @@ public class PurchaseTab extends JFrame {
 
 	/** Event handler for the <code>confirm purchase</code> event. */
 	protected void submitPaymentButtonClicked() {
+		
 		log.info("Sale complete");
-		saveOrder();
 		try {
 			log.debug("Items bought:\n" + model.getCurrentPurchaseTableModel());
 			domainController.confirmCurrentPurchase(
 					model.getCurrentPurchaseTableModel().getTableRows()
 					);
-			endSale();
-
-			model.getCurrentPurchaseTableModel().clear();
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
+		saveOrder();
+		endSale();
+		model.getCurrentPurchaseTableModel().clear();
 		window.dispose();
 	}
 
@@ -372,7 +372,6 @@ public class PurchaseTab extends JFrame {
 	/** Event handler for the <code>confirm purchase</code> event. */
 	protected void confirmPurchaseButtonClicked() {
 		log.info("Basket complete");
-		saveOrder();
 		try {
 			log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
 			domainController.confirmCurrentPurchase(
