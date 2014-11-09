@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 
@@ -17,13 +18,13 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	
 	@Id
     private Long id;
-	@Column(name = "stock_item")
+	@Transient
     private StockItem stockItem;
 	@Column(name = "name")
     private String name;
-	@Column(name = "quantity")
+	@Transient
     private Integer quantity;
-	@Column(name = "price")
+	@Transient
     private double price;
     
     public SoldItem(StockItem stockItem, int quantity) {
