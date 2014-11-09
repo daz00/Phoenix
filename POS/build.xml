@@ -11,48 +11,41 @@
 	<property file="version.properties" prefix="version" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="src.dir" value="${basedir}/src" />
-	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="target" value="1.8" />
 	<property name="source" value="1.8" />
 	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="conf.dir" value="${basedir}/conf" />
 
 	<!-- database variables -->
 	<property name="data.dir" value="${basedir}/data" />
 	<property name="db.file" value="${data.dir}/POSdb" />
 	<property name="db.alias" value="POS" />
 	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
-	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
+	<property name="hibernate.dir" value="${lib.dir}/hibernate" />
 
 
 	<!-- Classpaths -->
 	<path id="POS.classpath">
 		<pathelement location="${classes.dir}" />
-		<!-- configuration -->
-		<pathelement location="${lib.dir}" />
-		<!-- configuration -->
+
 		<pathelement location="${conf.dir}" />
 
-		<fileset dir="${lib.hibernate.dir}">
-			<include name="*.jar" />
-		</fileset>
+		<!-- configuration -->
 
 		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 		</fileset>
-	</path>
 	
+		<fileset dir="${hibernate.dir}">
+			<include name="*.jar" />
+		</fileset>
 
-	<path id="compile.classpath">
-		<fileset dir="${lib.dir}">
-			<include name="*.jar" />
-		</fileset>
-		<fileset dir="${lib.hibernate.dir}">
-			<include name="*.jar" />
-		</fileset>
 	</path>
 
+
+ 
 
 	<!-- Build targets -->
 
@@ -165,25 +158,17 @@
 		</git>
 	</target>
 	<!-- Database targets -->
-	
-	<target name="dbmanager" description="Start the HSQLDB manager">
-	        <java
-	            classname="org.hsqldb.util.DatabaseManagerSwing"
-	            classpathref="POS.classpath"
-	            fork="yes"
-	        >
-	            <arg line="--user sa --url ${db.url}" />
-	        </java>
-	    </target>
 
-	    <target name="startdb" description="Start the HSQLDB with the default params">
-	        <java
-	            classname="org.hsqldb.Server"
-	            classpathref="POS.classpath"
-	            fork="yes"
-	        >
-	            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
-	        </java>
+	<target name="dbmanager" description="Start the HSQLDB manager">
+		<java classname="org.hsqldb.util.DatabaseManagerSwing" classpathref="POS.classpath" fork="yes">
+			<arg line="--user sa --url ${db.url}" />
+		</java>
+	</target>
+
+	<target name="startdb" description="Start the HSQLDB with the default params">
+		<java classname="org.hsqldb.Server" classpathref="POS.classpath" fork="yes">
+			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
+		</java>
 	</target>
 
 

@@ -47,4 +47,6 @@ public interface SalesDomainController {
 
     public void addStock(StockItem Product);
     
+    public void endSession();
+    
 }

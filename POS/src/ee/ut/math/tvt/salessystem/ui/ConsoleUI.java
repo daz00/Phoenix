@@ -28,6 +28,7 @@ public class ConsoleUI {
 
 	private List<StockItem> warehouse;
 
+	
 	public ConsoleUI(SalesDomainController domainController) {
 		this.dc = domainController;
 
@@ -54,6 +55,7 @@ public class ConsoleUI {
 			while (true) {
 				System.out.print("> ");
 				command = in.readLine();
+
 				processCommand(command.trim().toLowerCase());
 				System.out.println("Done. ");
 			}
@@ -106,8 +108,10 @@ public class ConsoleUI {
 
 		if (c[0].equals("h"))
 			printUsage();
-		else if (c[0].equals("q"))
+		else if (c[0].equals("q")){
+			dc.endSession();
 			System.exit(0);
+		}
 		else if (c[0].equals("w"))
 			showStock(warehouse);
 		else if (c[0].equals("c"))
