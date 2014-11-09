@@ -179,7 +179,7 @@ public class PurchaseTab extends JFrame {
 		final JPanel panel3 = new JPanel();
 		JPanel panel4 = new JPanel();
 
-		window.setLayout(new GridLayout(6, 6));
+		window.setLayout(new GridLayout(4, 6));
 		panel.setBorder(BorderFactory.createTitledBorder("Purchase information"));
 		panel2.setBorder(BorderFactory.createTitledBorder("Payment"));
 		panel3.setBorder(BorderFactory.createTitledBorder("Change"));
@@ -190,7 +190,7 @@ public class PurchaseTab extends JFrame {
 		panel.add(new JLabel("Total amount to be paid: " + sum));
 
 		// - bar code
-		panel2.add(new JLabel("Enter the amount paid: "));
+		panel2.add(new JLabel("Enter the amount paid and press ENTER: "));
 		final JTextField input = new JTextField(20);
 		panel2.add(input);
 
