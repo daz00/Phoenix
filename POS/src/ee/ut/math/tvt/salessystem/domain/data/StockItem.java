@@ -2,32 +2,34 @@ package ee.ut.math.tvt.salessystem.domain.data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-
-@Entity
-@Table(name = "StockItem")
 /**
  * Stock item. Corresponds to the Data Transfer Object design pattern.
  */
+@Entity
+@Table(name = "StockItem")
 public class StockItem implements Cloneable, DisplayableItem {
-	
+
 	@Id
-    private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
 	@Column(name = "name")
-    private String name;
+	private String name;
 
-	@Transient
-    private double price;
+	@Column(name = "price")
+	private double price;
 
-	@Transient
-    private String description;
-    
-	@Transient
-    private int quantity;
+	@Column(name = "quantity")
+	private int quantity;
+
+	@Column(name = "description")
+	private String description;
+
 
     /**
      * Constucts new <code>StockItem</code> with the specified values.
@@ -36,14 +38,14 @@ public class StockItem implements Cloneable, DisplayableItem {
      * @param desc description of the product
      * @param price price of the product
      */
-    public StockItem(Long id, String name, String desc, double price) {
+    public StockItem(int id, String name, String desc, double price) {
         this.id = id;
         this.name = name;
         this.description = desc;
         this.price = price;
     }
     
-    public StockItem(Long id, String name, String desc, double price, int quantity) {
+    public StockItem(int id, String name, String desc, double price, int quantity) {
         this.id = id;
         this.name = name;
         this.description = desc;
@@ -69,7 +71,7 @@ public class StockItem implements Cloneable, DisplayableItem {
         return name;
     }
     
-    public Long getBarCode(){
+    public int getBarCode(){
     	return id;
     }
 
@@ -85,11 +87,11 @@ public class StockItem implements Cloneable, DisplayableItem {
         this.price = price;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     

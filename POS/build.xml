@@ -17,6 +17,7 @@
 	<property name="source" value="1.8" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="conf.dir" value="${basedir}/conf" />
+	<property name="data.dir" value="${basedir}/data" />
 
 	<!-- database variables -->
 	<property name="data.dir" value="${basedir}/data" />
@@ -29,8 +30,9 @@
 	<!-- Classpaths -->
 	<path id="POS.classpath">
 		<pathelement location="${classes.dir}" />
-
 		<pathelement location="${conf.dir}" />
+		<pathelement location="${lib.dir}" />
+		<pathelement location="${data.dir}" />
 
 		<!-- configuration -->
 
@@ -43,9 +45,23 @@
 		</fileset>
 
 	</path>
+	
+	<path id="properties">
+			<dirset dir="." />
+		</path>
+	
+	<path id="run.classpath">
+			<pathelement location="${classes.dir}" />
+			<!-- configuration -->
+			<pathelement location="${conf.dir}" />
+			<path refid="compile.classpath" />
+		</path>
 
-
- 
+		<path id="compile.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
 
 	<!-- Build targets -->
 
@@ -160,16 +176,15 @@
 	<!-- Database targets -->
 
 	<target name="dbmanager" description="Start the HSQLDB manager">
-		<java classname="org.hsqldb.util.DatabaseManagerSwing" classpathref="POS.classpath" fork="yes">
-			<arg line="--user sa --url ${db.url}" />
-		</java>
-	</target>
+			<java classname="org.hsqldb.util.DatabaseManagerSwing" classpathref="run.classpath" fork="yes">
+				<arg line="--user sa --url ${db.url}" />
+			</java>
+		</target>
 
-	<target name="startdb" description="Start the HSQLDB with the default params">
-		<java classname="org.hsqldb.Server" classpathref="POS.classpath" fork="yes">
-			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
-		</java>
-	</target>
-
+		<target name="startdb" description="Start the HSQLDB with the default params">
+			<java classname="org.hsqldb.Server" classpathref="run.classpath" fork="yes">
+				<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
+			</java>
+		</target>
 
 </project>

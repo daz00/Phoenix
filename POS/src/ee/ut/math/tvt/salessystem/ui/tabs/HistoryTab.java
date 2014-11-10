@@ -37,12 +37,11 @@ import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
  */
 public class HistoryTab extends JPanel {
 	private SalesSystemModel model;
-	private static final long serialVersionUID = 1L;
-
+	
 	public HistoryTab(SalesSystemModel model) {
 		this.model = model;
 	}
-
+	
 	public Component draw() {
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -93,6 +92,7 @@ public class HistoryTab extends JPanel {
 		for (SoldItem i : cur.getSold()) {
 			purchase.addItem(i);
 		}
+		
 		JLabel summa = new JLabel("The total sum is " + cur.getTotalSum() + "  euros");
 	
 		

@@ -122,7 +122,7 @@ public class ConsoleUI {
 			    for(StockItem stockItem : cart) {
 			        soldItems.add(new SoldItem(stockItem, stockItem.getQuantity()));
 			    }
-				dc.confirmCurrentPurchase(soldItems);
+				dc.submitCurrentPurchase(soldItems);
 				cart.clear();
 			} catch (VerificationFailedException e) {
 				log.error(e.getMessage());

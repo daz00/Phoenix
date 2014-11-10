@@ -39,7 +39,7 @@ public class PurchaseItemPanel extends JPanel {
     private JTextField sumField;
 
     private JButton addItemButton;
-    private JComboBox<String> items;
+    private JComboBox<String> combo;
 
     // Warehouse model
     private SalesSystemModel model;
@@ -110,13 +110,14 @@ public class PurchaseItemPanel extends JPanel {
 
         // == Add components to the panel
         List<StockItem> stockItems = model.getWarehouseTableModel().getTableRows();
-        items = new JComboBox<String>();
+        combo = new JComboBox<String>();
         for(int i = 0; i<stockItems.size();i=i+1){
-        	items.addItem(stockItems.get(i).getName());
+        	combo.addItem(stockItems.get(i).getName());
+      
         }
         panel.add(new JLabel("Products:"));
-        items.setEnabled(false);
-        panel.add(items);
+        combo.setEnabled(false);
+        panel.add(combo);
 
         
         // - bar code
@@ -136,10 +137,10 @@ public class PurchaseItemPanel extends JPanel {
         //panel.add(new JLabel("Sum:"));
         //panel.add(sumField);
         
-        items.addActionListener (new ActionListener () {
+        combo.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
-            	StockItem stock = model.getWarehouseTableModel().getItemById(items.getSelectedIndex()+1);
-            	barCodeField.setText(stock.getBarCode().toString());
+            	StockItem stock = model.getWarehouseTableModel().getItemById(combo.getSelectedIndex()+1);
+            	barCodeField.setText(String.valueOf(stock.getBarCode()));
             	priceField.setText(String.valueOf(stock.getPrice()));
             }
         });
@@ -223,7 +224,7 @@ public class PurchaseItemPanel extends JPanel {
         this.addItemButton.setEnabled(enabled);
         this.barCodeField.setEnabled(enabled);
         this.quantityField.setEnabled(enabled);
-        this.items.setEnabled(enabled);
+        this.combo.setEnabled(enabled);
     }
 
     /**

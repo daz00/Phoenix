@@ -6,6 +6,7 @@ import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -16,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,6 +31,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
+
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.Session;
+import org.hibernate.SessionException;
 
 public class StockTab {
 
@@ -148,12 +154,57 @@ public class StockTab {
   }
 
 	public void addNewItem() {
-		StockItem addedItem = new StockItem(Long.parseLong(barCodeField.getText()),
-				nameField.getText(),description.getText(),
-				Double.parseDouble(priceField.getText()),
-				Integer.parseInt(quantityField.getText()));
-		model.getWarehouseTableModel().addItem(addedItem);
-	}
+		try {
+
+
+			int quantity = Integer.parseInt(quantityField.getText());
+			double price = (double) Math.round(Double.parseDouble(priceField
+					.getText()) * 100) / 100;
+			int id1 = Integer.parseInt(barCodeField.getText());
+			StockItem addedItem = new StockItem(id1, nameField.getText(),
+					description.getText(), price, quantity);
+
+			model.getWarehouseTableModel().addItem(addedItem);
+			Session session = HibernateUtil.currentSession();
+			session.getTransaction().begin();
+
+			for (StockItem x : model.getWarehouseTableModel()
+					.getTableRows()) {
+				if ((Long.parseLong(barCodeField.getText()) == x.getId())) {
+					session.update(addedItem);
+					break;
+
+				} else {
+					session.save(addedItem);
+				}
+			}
+			JComboBox<String> combo = new JComboBox<String>();
+			for (StockItem x : model.getWarehouseTableModel().getTableRows()) {
+				combo.addItem(x.getName());
+			}
+			model.getWarehouseTableModel().fireTableDataChanged();
+			session.getTransaction().commit();
+			session.close();
+
+		} catch (NullPointerException e) {
+
+			e.getMessage();
+
+		} catch (NumberFormatException e) {
+
+			System.out.println(e.getCause());
+		} catch (ConcurrentModificationException e) {
+			e.printStackTrace();
+		} catch (SessionException l) {
+			l.printStackTrace();
+		} catch (NonUniqueObjectException e) {
+			e.printStackTrace();
+		}
+		
+			
+		}
+		
+	
 
   // table of the wareshouse stock
   private Component drawStockMainPane() {

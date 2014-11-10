@@ -1,10 +1,5 @@
 package ee.ut.math.tvt.salessystem.domain.data;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 
 
@@ -17,15 +12,25 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	
 	
 	@Id
-    private Long id;
-	@Transient
-    private StockItem stockItem;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@ManyToOne
+	@JoinColumn(name = "stockitem_id")
+	private StockItem stockItem;
+
 	@Column(name = "name")
-    private String name;
-	@Transient
-    private Integer quantity;
-	@Transient
-    private double price;
+	private String name;
+              
+    @ManyToOne
+    @JoinColumn (name="history_id")
+    private HistoryItem historyitem;
+
+	@Column(name = "quantity")
+	private Integer quantity;
+
+	@Column(name = "price")
+	private double price;
     
     public SoldItem(StockItem stockItem, int quantity) {
         this.stockItem = stockItem;
@@ -36,11 +41,11 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
     
     
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
     
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     
@@ -79,5 +84,13 @@ public class SoldItem implements Cloneable, DisplayableItem {
     public void setStockItem(StockItem stockItem) {
         this.stockItem = stockItem;
     }
+    public HistoryItem getHistoryItem() {
+		return historyitem;
+	}
+
+	public void setHistoryItem(HistoryItem newHistoryItem) {
+		this.historyitem = newHistoryItem;
+		this.historyitem=newHistoryItem;
+	}
     
 }

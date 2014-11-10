@@ -313,7 +313,7 @@ public class PurchaseTab extends JFrame {
 		log.info("Sale complete");
 		try {
 			log.debug("Items bought:\n" + model.getCurrentPurchaseTableModel());
-			domainController.confirmCurrentPurchase(
+			domainController.submitCurrentPurchase(
 					model.getCurrentPurchaseTableModel().getTableRows()
 					);
 		} catch (VerificationFailedException e1) {
@@ -374,7 +374,7 @@ public class PurchaseTab extends JFrame {
 		log.info("Basket complete");
 		try {
 			log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
-			domainController.confirmCurrentPurchase(
+			domainController.submitCurrentPurchase(
 					model.getCurrentPurchaseTableModel().getTableRows()
 					);
 			endSale();
@@ -383,13 +383,7 @@ public class PurchaseTab extends JFrame {
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
-		confirmWin(); //Draws the confirmation window
-		//    JFrame window = new JFrame();
-		//    JTextField bla = new JTextField();
-		//  
-		//	window.add(bla);
-		//	window.setVisible(true);
-		//	setLocationRelativeTo(null);
+		confirmWin(); 
 
 	}
 	/* === Helper methods that bring the whole purchase-tab to a certain state

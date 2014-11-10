@@ -2,9 +2,12 @@ package ee.ut.math.tvt.salessystem.ui.model;
 
 import java.util.NoSuchElementException;
 
+import javax.swing.JComboBox;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 
 /**
@@ -13,10 +16,11 @@ import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = Logger.getLogger(PurchaseInfoTableModel.class);
-	
+	private static final Logger log = Logger
+			.getLogger(PurchaseInfoTableModel.class);
+
 	public PurchaseInfoTableModel() {
-		super(new String[] { "Id", "Name", "Price", "Quantity", "Sum"});
+		super(new String[] { "Id", "Name", "Price", "Quantity", "Sum" });
 	}
 
 	@Override
@@ -55,33 +59,45 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
 		return buffer.toString();
 	}
-	
-    /**
-     * Add new StockItem to table.
-     */
-	public void addItem(final SoldItem soldItem) {
-        /**
-         * XXX In case such stockItem already exists increase the quantity of the
-         * existing stock.
-         */
-        if (rows.isEmpty()) {
-            rows.add(soldItem);
-        } else {
-            int i = 0;
-            boolean rowFound = false;
-            for (SoldItem item : rows) {
-                if (soldItem.getName().equals(item.getName())) {
-                    soldItem.setQuantity(item.getQuantity() + soldItem.getQuantity());
-                    rows.get(i).setQuantity(soldItem.getQuantity());
-                    rowFound = true;
-                }
-                i++;
-            }
-            if (!rowFound) {
-                rows.add(soldItem);
-            }
-        }
-        fireTableDataChanged();
-    }
-    }
-	
+
+	/**
+	 * Add new StockItem to table.
+	 */
+	public void addItem(final SoldItem item) {
+		for (int i = 0; i < rows.size(); i++) {
+			if (rows.get(i).getStockItem().getId() == item.getStockItem()
+					.getId()) {
+				SoldItem existingItem = rows.get(i);
+				existingItem.setQuantity(existingItem.getQuantity()
+						+ item.getQuantity());
+				fireTableDataChanged(existingItem);
+				return;
+			}
+		}
+
+		rows.add(item);
+		fireTableDataChanged(item);
+	}
+
+	public void fireTableDataChanged(SoldItem item) {
+		log.debug("Added " + item.getName() + " quantity of "
+				+ item.getQuantity());
+		fireTableDataChanged();
+	}
+
+	public JComboBox<String> setItems(JComboBox<String> combo, StockItem item) {
+
+		combo.addItem(item.getName());
+		log.debug("Added " + item.getName() + "to ComboBox ");
+		return combo;
+	}
+
+	public double getSum() {
+		double summa = 0.0;
+		for (SoldItem soldItem : getTableRows()) {
+			summa += soldItem.getSum();
+		}
+		return summa;
+	}
+
+}

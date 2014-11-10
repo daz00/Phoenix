@@ -1,16 +1,33 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
 import java.text.Format;
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class HistoryItem implements Cloneable, DisplayableItem {
-	    private String date;
-	    private String time;
-	    private double sum;
-	    private List<SoldItem> sold; 
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+@Entity
+@Table(name = "HistoryItem")
+public class HistoryItem implements Cloneable, DisplayableItem {
+	@Column(name = "sale_date")
+	private String date;
+
+	@Column(name = "sale_time")
+	private String time;
+
+	@Column(name = "price_total")
+	private double price;
+
+	@OneToMany(mappedBy = "historyitem")
+	private List<SoldItem> sold;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	private double sum;
     
 	    
 	    public HistoryItem(List<SoldItem> sold) {
@@ -21,7 +38,7 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	        SimpleDateFormat ft2 =  new SimpleDateFormat ("HH:mm:ss");
 	        time = ft2.format(timeNow);
 	       
-	        sum = 0;
+	        double sum = 0;
 	   
 	    	
 	    	for(int i = 0; i < sold.size(); i++) {
@@ -76,9 +93,19 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 		}
 
 		@Override
-		public Long getId() {
+		public Integer getId() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		public void setId(Integer itemId) {
+			this.id = itemId;
+		}
+		public void addGoods(SoldItem item){
+			item.setHistoryItem(this);
+			sold.add(item);
+			
+			
 		}
 
 }
