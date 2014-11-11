@@ -319,13 +319,19 @@ public class PurchaseTab extends JFrame {
 			domainController.submitCurrentPurchase(
 					model.getCurrentPurchaseTableModel().getTableRows()
 					);
+			HistoryItem z = new HistoryItem(
+					model.getCurrentPurchaseTableModel().getTableRows());
+			model.getHistoryTableModel().addItem(z)
+					;
 			Session session = HibernateUtil.currentSession();
 			session.getTransaction().begin();
 			for (SoldItem x : model.getCurrentPurchaseTableModel().getTableRows()){
 				System.out.print(x.getName());
 				session.save(x);
-				session.getTransaction().commit();
+				session.save(z);
+				
 			}
+			session.getTransaction().commit();
 			
 				
 			

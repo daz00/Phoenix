@@ -46,7 +46,7 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	    
 	    public HistoryItem(List<SoldItem> sold) {
 	    	Date dNow = new Date();
-	        SimpleDateFormat ft =  new SimpleDateFormat ("dd.MM.yyyy");
+	        SimpleDateFormat ft =  new SimpleDateFormat ("yyyy-MM-dd");
 	        date = ft.format(dNow);
 	        Date timeNow = new Date();
 	        SimpleDateFormat ft2 =  new SimpleDateFormat ("HH:mm:ss");
