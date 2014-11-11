@@ -19,17 +19,16 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@JoinColumn(name = "stockitem_id")
 	private StockItem stockItem;
 
-	@Column(name = "name")
+
 	private String name;
               
     @ManyToOne
-    @JoinColumn (name="history_id")
+    @JoinColumn (name="historyitem_id")
     private HistoryItem historyitem;
 
 	@Column(name = "quantity")
 	private Integer quantity;
 
-	@Column(name = "price")
 	private double price;
     
     public SoldItem(StockItem stockItem, int quantity) {

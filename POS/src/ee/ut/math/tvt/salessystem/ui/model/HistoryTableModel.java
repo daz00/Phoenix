@@ -24,7 +24,7 @@ public class HistoryTableModel extends SalesSystemTableModel<HistoryItem> {
 		case 1:
 			return item.getTime();
 		case 2:
-			return item.getTotalSum();
+			return item.getTotalPrice();
 		}
 		throw new IllegalArgumentException("Column index out of range");
 	}

@@ -93,7 +93,7 @@ public class HistoryTab extends JPanel {
 			purchase.addItem(i);
 		}
 		
-		JLabel summa = new JLabel("The total sum is " + cur.getTotalSum() + "  euros");
+		JLabel summa = new JLabel("The total sum is " + cur.getTotalPrice() + "  euros");
 	
 		
 		window.setLayout(new GridLayout(2,2));

@@ -1,6 +1,5 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
-import java.text.Format;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +7,9 @@ import java.util.List;
 
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
+/**
+ * History item. Corresponds to the Data Transfer Object design pattern.
+ */
 @Entity
 @Table(name = "HistoryItem")
 public class HistoryItem implements Cloneable, DisplayableItem {
@@ -27,7 +28,20 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private double sum;
+
+
+	
+	/**
+     * Constructs new  <code>HistoryItem</code>.
+     * @param id
+     * @param date
+     * @param time
+     * @param price
+     */
+	public HistoryItem(){
+		
+	}
+	
     
 	    
 	    public HistoryItem(List<SoldItem> sold) {
@@ -37,13 +51,6 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	        Date timeNow = new Date();
 	        SimpleDateFormat ft2 =  new SimpleDateFormat ("HH:mm:ss");
 	        time = ft2.format(timeNow);
-	       
-	        double sum = 0;
-	   
-	    	
-	    	for(int i = 0; i < sold.size(); i++) {
-	    		sum += sold.get(i).getPrice();
-	    	}
 	    	
 	    	this.sold = sold;
 	    	
@@ -67,12 +74,12 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 			this.time = time;
 		}
 
-		public double getSum() {
-			return sum;
+		public double getPrice() {
+			return price;
 		}
 
-		public void setSum(double sum) {
-			this.sum = sum;
+		public void setPrice(double price) {
+			this.price = price;
 		}
 
 		public List<SoldItem> getSold() {
@@ -82,11 +89,11 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 		public void setSold(List<SoldItem> sold) {
 			this.sold =sold;
 		}
-		//Sum
-		public String getTotalSum() {
+		//price
+		public String getTotalPrice() {
 			Double money = 0.0;
 			for (final SoldItem item : sold) {
-				money += item.getSum();
+				money += item.getPrice();
 			}
 			money = Math.round(money * 100) / 100.0;
 			return money.toString();

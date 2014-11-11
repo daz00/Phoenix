@@ -1,8 +1,10 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -24,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import org.hibernate.Session;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -207,10 +211,15 @@ public class PurchaseItemPanel extends JPanel {
 						+ stockItem.getName() + " in the stock.");
 
 			} else {
-				model.getCurrentPurchaseTableModel().addItem(
-						new SoldItem(stockItem, quantity));
-
-				stockItem.setQuantity(stockItem.getQuantity()-quantity);;
+				SoldItem x = new SoldItem(stockItem, quantity);
+				model.getCurrentPurchaseTableModel().addItem(x);
+				stockItem.setQuantity(stockItem.getQuantity()-quantity);
+				
+				//Session stuff
+				Session session = HibernateUtil.currentSession();
+				session.getTransaction().begin();
+				session.save(x);
+				session.getTransaction().commit();
 
 			}
         }

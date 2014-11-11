@@ -66,10 +66,6 @@
 		<copy file="${basedir}/src/hibernate.cfg.xml" todir="${classes.dir}" overwrite="true" />
 	</target>
 
-	<target name="build-tests" depends="build" description="Build the system">
-		<mkdir dir="${build.test.dir}" />
-		<javac srcdir="${test.dir}" destdir="${build.test.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.5" source="1.5" classpathref="run.classpath" />
-	</target>
 
 	<target name="clean">
 		<delete dir="${build.dir}" />

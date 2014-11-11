@@ -184,7 +184,6 @@ public class StockTab {
 			}
 			model.getWarehouseTableModel().fireTableDataChanged();
 			session.getTransaction().commit();
-			session.close();
 
 		} catch (NullPointerException e) {
 
