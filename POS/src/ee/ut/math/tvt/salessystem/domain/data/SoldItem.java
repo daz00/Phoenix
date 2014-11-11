@@ -40,7 +40,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
     }
     
     
-    public Integer getId() {
+   public Integer getId() {
         return id;
     }
     

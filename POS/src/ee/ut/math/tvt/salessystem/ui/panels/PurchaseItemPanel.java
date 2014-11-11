@@ -214,12 +214,6 @@ public class PurchaseItemPanel extends JPanel {
 				SoldItem x = new SoldItem(stockItem, quantity);
 				model.getCurrentPurchaseTableModel().addItem(x);
 				stockItem.setQuantity(stockItem.getQuantity()-quantity);
-				
-				//Session stuff
-				Session session = HibernateUtil.currentSession();
-				session.getTransaction().begin();
-				session.save(x);
-				session.getTransaction().commit();
 
 			}
         }

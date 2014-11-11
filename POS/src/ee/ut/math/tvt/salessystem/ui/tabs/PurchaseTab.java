@@ -2,10 +2,12 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -24,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -316,6 +319,17 @@ public class PurchaseTab extends JFrame {
 			domainController.submitCurrentPurchase(
 					model.getCurrentPurchaseTableModel().getTableRows()
 					);
+			Session session = HibernateUtil.currentSession();
+			session.getTransaction().begin();
+			for (SoldItem x : model.getCurrentPurchaseTableModel().getTableRows()){
+				System.out.print(x.getName());
+				session.save(x);
+				session.getTransaction().commit();
+			}
+			
+				
+			
+			
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
@@ -323,6 +337,7 @@ public class PurchaseTab extends JFrame {
 		endSale();
 		model.getCurrentPurchaseTableModel().clear();
 		window.dispose();
+		
 	}
 
 
@@ -377,9 +392,6 @@ public class PurchaseTab extends JFrame {
 			domainController.submitCurrentPurchase(
 					model.getCurrentPurchaseTableModel().getTableRows()
 					);
-			endSale();
-
-			model.getCurrentPurchaseTableModel().clear();
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
