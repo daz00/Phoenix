@@ -1,122 +1,121 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." name="Intro" default="build">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
-	<!-- Definitions of the properties we used during the rest of this script. -->
 
-	<property file="version.properties" />
-	<property file="application.properties" />
-	<property name="debuglevel" value="source,lines,vars" />
+<project basedir="." name="POS">
 	<property name="main-class" value="ee.ut.math.tvt.phoenix.Intro" />
+	<property environment="env" />
+	<property name="debuglevel" value="source,lines,vars" />
 	<property file="application.properties" prefix="app" />
 	<property file="version.properties" prefix="version" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="target" value="1.7" />
+	<property name="source" value="1.7" />
+	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="jar.dir" value="${build.dir}/jar" />
-	<property name="target" value="1.8" />
-	<property name="source" value="1.8" />
+
 	<property name="lib.dir" value="${basedir}/lib" />
-	<property name="conf.dir" value="${basedir}/conf" />
-	<property name="data.dir" value="${basedir}/data" />
+
 
 	<!-- database variables -->
 	<property name="data.dir" value="${basedir}/data" />
 	<property name="db.file" value="${data.dir}/POSdb" />
 	<property name="db.alias" value="POS" />
 	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
-	<property name="hibernate.dir" value="${lib.dir}/hibernate" />
+	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
 
 
-	<!-- Classpaths -->
-	<path id="POS.classpath">
-		<pathelement location="${classes.dir}" />
-		<pathelement location="${conf.dir}" />
-		<pathelement location="${lib.dir}" />
-		<pathelement location="${data.dir}" />
-
-		<!-- configuration -->
-
+	<path id="libs">
 		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 		</fileset>
-	
-		<fileset dir="${hibernate.dir}">
-			<include name="*.jar" />
-		</fileset>
-
 	</path>
-	
+
 	<path id="properties">
-			<dirset dir="." />
-		</path>
-	
+		<dirset dir="." />
+	</path>
+
+
 	<path id="run.classpath">
-			<pathelement location="${classes.dir}" />
-			<!-- configuration -->
-			<pathelement location="${conf.dir}" />
-			<path refid="compile.classpath" />
-		</path>
+		<pathelement location="${classes.dir}" />
+		<!-- configuration -->
+		<pathelement location="${conf.dir}" />
+		<path refid="compile.classpath" />
+	</path>
 
-		<path id="compile.classpath">
-			<fileset dir="${lib.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</path>
-
-	<!-- Build targets -->
-
-
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
 
 	<target name="build" description="Build the system">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="${debuglevel}" encoding="utf-8" compiler="modern" target="${target}" source="${source}" includeantruntime="false" classpathref="POS.classpath" />
-
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" 
+			debug="true" 
+			debuglevel="${debuglevel}" 
+			encoding="utf-8" 
+			compiler="modern" 
+			target="${target}" 
+			source="${source}" 
+			includeantruntime="false" 
+			classpathref="compile.classpath" />
+		<copy file="${basedir}/src/log4j.xml" todir="${classes.dir}" overwrite="true" />
+		<copy file="${basedir}/src/hibernate.cfg.xml" todir="${classes.dir}" overwrite="true" />
 	</target>
 
-	<target name="clean" description="Clean up build system results">
+	<target name="build-tests" depends="build" description="Build the system">
+		<mkdir dir="${build.test.dir}" />
+		<javac srcdir="${test.dir}" destdir="${build.test.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.5" source="1.5" classpathref="run.classpath" />
+	</target>
+
+	<target name="clean">
 		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="run" depends="build" description="Run the template application">
-		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="POS.classpath" fork="yes">
+
+	<target name="run" depends="build">
+		<!-- classpathref="libs" -->
+		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="run.classpath" fork="yes">
 			<jvmarg value="-Xdebug" />
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
 	</target>
+	
 
-	<target name="dist" description="Makes a jar file" depends="build">
-		<jar destfile="${build.dir}/jar/phoenix.jar" basedir="${classes.dir}">
+	<target name="runc" depends="build" description="Run the application (console)">
+		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="run.classpath" fork="yes">
+			<arg value="console" />
+		</java>
+	</target>
+
+	<target name="dist" depends="build">
+
+		<propertyfile file="version.properties" comment="version properties">
+			<entry key="build.revision.number" type="int" default="0" operation="+" />
+		</propertyfile>
+
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/Phoenix.jar" basedir="${classes.dir}">
+
+
 			<zipgroupfileset dir="lib" includes="**/*.jar" />
 
-			<fileset dir="${basedir}" includes="*.properties" />
+			<fileset dir="${basedir}" includes="*.properties logo.png" />
 
 			<manifest>
 				<attribute name="Main-Class" value="${main-class}" />
 			</manifest>
 		</jar>
-
-
-
-		<!-- This changes the revision number in our properties file -->
-		<propertyfile file="version.properties" comment="Makes a change to the current version nr">
-			<entry key="build.revision.number" type="int" default="" operation="+" value="1" />
-		</propertyfile>
 	</target>
+
 
 	<target name="jrun" depends="dist">
 		<java jar="${jar.dir}/Phoenix.jar" fork="true" />
+
 	</target>
-
-	<!-- New targets (Homework_4)  -->
-
-	<target name="runc" depends="build" description="Run the application (console)">
-		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="POS.classpath" fork="yes">
-			<arg value="console" />
-		</java>
-	</target>
-
-	<!-- GIT macrodefinition (Allows us to use commands in other targets) -->
 
 	<macrodef name="git">
 		<attribute name="command" />
@@ -130,8 +129,6 @@
 			</exec>
 		</sequential>
 	</macrodef>
-
-	<!-- Git related awesome targets -->
 
 	<target name="git_commit">
 		<input message="Commit message" addproperty="commit-message" />
@@ -148,7 +145,6 @@
 		</git>
 
 		<git command="push" />
-		<arg value="https://${username}:${password}@github.com/Phoenix.git" />
 	</target>
 
 	<target name="git_tag">
@@ -167,24 +163,26 @@
 		</git>
 		<git command="push">
 			<args>
-				<arg value="https://${username}:${password}@github.com/Phoenix/homework_4.git" />
+				<arg value="https://${username}:${password}@github.com/daz00/Phoenix.git" />
 				<arg value="--tags" />
 			</args>
 
 		</git>
 	</target>
-	<!-- Database targets -->
+	
+	<!-- Database stuff -->
 
 	<target name="dbmanager" description="Start the HSQLDB manager">
-			<java classname="org.hsqldb.util.DatabaseManagerSwing" classpathref="run.classpath" fork="yes">
-				<arg line="--user sa --url ${db.url}" />
-			</java>
-		</target>
+		<java classname="org.hsqldb.util.DatabaseManagerSwing" classpathref="run.classpath" fork="yes">
+			<arg line="--user sa --url ${db.url}" />
+		</java>
+	</target>
 
-		<target name="startdb" description="Start the HSQLDB with the default params">
-			<java classname="org.hsqldb.Server" classpathref="run.classpath" fork="yes">
-				<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
-			</java>
-		</target>
+	<target name="startdb" description="Start the HSQLDB with the default params">
+		<java classname="org.hsqldb.Server" classpathref="run.classpath" fork="yes">
+			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
+		</java>
+	</target>
+
 
 </project>
