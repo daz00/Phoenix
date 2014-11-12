@@ -321,16 +321,15 @@ public class PurchaseTab extends JFrame {
 					);
 			HistoryItem z = new HistoryItem(
 					model.getCurrentPurchaseTableModel().getTableRows());
-			model.getHistoryTableModel().addItem(z)
-					;
 			Session session = HibernateUtil.currentSession();
 			session.getTransaction().begin();
 			for (SoldItem x : model.getCurrentPurchaseTableModel().getTableRows()){
 				System.out.print(x.getName());
 				session.save(x);
-				session.save(z);
+				
 				
 			}
+			session.save(z);
 			session.getTransaction().commit();
 			
 				

@@ -178,12 +178,9 @@ public class StockTab {
 					session.save(addedItem);
 				}
 			}
-			JComboBox<String> combo = new JComboBox<String>();
-			for (StockItem x : model.getWarehouseTableModel().getTableRows()) {
-				combo.addItem(x.getName());
-			}
 			model.getWarehouseTableModel().fireTableDataChanged();
 			session.getTransaction().commit();
+		
 
 		} catch (NullPointerException e) {
 

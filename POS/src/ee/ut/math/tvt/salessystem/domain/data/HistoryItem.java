@@ -13,6 +13,10 @@ import javax.persistence.OneToMany;
 @Entity
 @Table(name = "HistoryItem")
 public class HistoryItem implements Cloneable, DisplayableItem {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
 	@Column(name = "sale_date")
 	private String date;
 
@@ -25,9 +29,6 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@OneToMany(mappedBy = "historyitem")
 	private List<SoldItem> sold;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
 
 	
@@ -54,7 +55,7 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	    	
 	    	this.sold = sold;
 	    	
-	    	
+	    	price = getTotalPrice();
 	    	
 	    }
 
@@ -90,13 +91,14 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 			this.sold =sold;
 		}
 		//price
-		public String getTotalPrice() {
+		public double getTotalPrice() {
 			Double money = 0.0;
 			for (final SoldItem item : sold) {
 				money += item.getPrice();
 			}
 			money = Math.round(money * 100) / 100.0;
-			return money.toString();
+			return money;
+			
 		}
 
 		@Override
