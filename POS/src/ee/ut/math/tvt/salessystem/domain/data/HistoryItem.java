@@ -42,7 +42,6 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	public HistoryItem(){
 		
 	}
-	
     
 	    
 	    public HistoryItem(List<SoldItem> sold) {
@@ -53,9 +52,13 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	        SimpleDateFormat ft2 =  new SimpleDateFormat ("HH:mm:ss");
 	        time = ft2.format(timeNow);
 	    	
+	    	for(int i = 0; i < sold.size(); i++) {
+	    		price += sold.get(i).getPrice()*sold.get(i).getQuantity();
+	    	}
+	    	
 	    	this.sold = sold;
 	    	
-	    	price = getTotalPrice();
+	    	
 	    	
 	    }
 
@@ -94,11 +97,10 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 		public double getTotalPrice() {
 			Double money = 0.0;
 			for (final SoldItem item : sold) {
-				money += item.getPrice();
+				money += item.getPrice()*item.getQuantity();
 			}
 			money = Math.round(money * 100) / 100.0;
 			return money;
-			
 		}
 
 		@Override

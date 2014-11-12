@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.phoenix.Intro;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
@@ -35,6 +36,7 @@ import javax.swing.table.JTableHeader;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.SessionException;
+import org.apache.log4j.Logger;
 
 public class StockTab {
 
@@ -47,6 +49,7 @@ public class StockTab {
 
   private JButton addItem;
   private SalesSystemModel model;
+  private static final Logger log = Logger.getLogger(StockTab.class);
 
   public StockTab(SalesSystemModel model) {
     this.model = model;
@@ -194,7 +197,7 @@ public class StockTab {
 		} catch (SessionException l) {
 			l.printStackTrace();
 		} catch (NonUniqueObjectException e) {
-			e.printStackTrace();
+			log.info("Item already exists; added new quantities");
 		}
 		
 			

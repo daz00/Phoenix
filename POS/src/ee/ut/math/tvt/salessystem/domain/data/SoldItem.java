@@ -38,6 +38,10 @@ public class SoldItem implements Cloneable, DisplayableItem {
         this.quantity = quantity;
         
     }
+    public SoldItem() {
+        
+    }
+    
     
     
    public Integer getId() {
