@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="templateApp" default="build">
+    
+    <!-- Definitions of variables used during the rest of this script -->
+    
+    <property file="build.properties"/>
+    <property name="build.dir"           value="${basedir}/build"/>
+    <property name="src.dir"             value="${basedir}/src" />
+    <property name="conf.dir"            value="${basedir}/conf" />
+    <property name="lib.dir"             value="${basedir}/lib"/>
+    <property name="lib.hibernate.dir"   value="${lib.dir}/hibernate"/>
+    
+    <property name="build.classes.dir"   value="${build.dir}/classes" />
+    <property name="dist.dir"            value="${build.dir}/dist" />
+    <property name="doc.dir"             value="${build.dir}/javadoc"/>
+    <property name="test.reports.dir"    value="${build.dir}/reports/"/>
+
+    <!-- database variables -->
+    <property name="data.dir"            value="${basedir}/data"/>
+    <property name="db.file"             value="${data.dir}/POSdb"/>
+    <property name="db.alias"            value="POS"/>
+    <property name="db.url"              value="jdbc:hsqldb:hsql://localhost/POS"/>
+    
+    
+    <!-- Definitions of classpath variants used for different tasks -->
+    
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        
+        <fileset dir="${lib.hibernate.dir}">
+             <include name="*.jar"/>
+         </fileset>
+    </path>
+    
+    <path id="run.classpath">
+        <pathelement location="${build.classes.dir}"/>
+        <!-- configuration -->
+        <pathelement location="${conf.dir}"/>
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+            
+        <fileset dir="${lib.hibernate.dir}">
+             <include name="*.jar"/>
+         </fileset>
+    </path>
+            
+    
+    
+    <!-- Definitions of runnable ant targets.
+         Run them from the command line by executing "ant [targetname]"  -->    
+    
+    <target name="run" depends="build" description="Run the template application">
+        <java
+            classname="ee.ut.math.tvt.salessystem.SalesSystem"
+            classpathref="run.classpath"
+            fork="yes"
+        />
+    </target>
+    
+    <target name="runc" depends="build" description="Run the template application (console)">
+            <java
+                classname="ee.ut.math.tvt.salessystem.SalesSystem"
+                classpathref="run.classpath"
+                fork="yes">
+                <arg value="console" />
+            </java>
+        </target>
+
+    <target name="build" description="Build the system">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+        <javac
+            srcdir="${src.dir}"
+            destdir="${build.classes.dir}"
+            debug="true"
+            debuglevel="lines,vars,source"
+            encoding="utf-8"
+            compiler="modern"
+            target="1.5"
+            source="1.5"
+        >
+            <classpath refid="compile.classpath"/>
+            <compilerarg value="-Xlint:unchecked" />
+            <compilerarg value="-Xlint:deprecation" />
+        </javac>
+        
+    </target>
+
+    <target name="dist" depends="build" description="Build distribution unit"> 
+        <mkdir dir="${dist.dir}"/>
+        <!-- copy libraries to dist -->
+        <!-- TODO : also copy the lib/hibernate libs !! --> 
+        <copy todir="${dist.dir}">
+            <fileset dir="." includes="${lib.dir}/*.jar"/>
+            <fileset file="${conf.dir}/log4j.xml" />
+        </copy>
+        <jar destfile="${dist.dir}/${ant.project.name}.jar">
+            <fileset dir="${build.classes.dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="ee.ut.math.tvt.salessystem.SalesSystem"/>
+                <attribute name="Class-Path" value=". lib/log4j-1.2.11.jar lib/looks-2.0.4.jar lib/xerces.jar"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Build internal documentation -->
+    <target name="javadoc" description="Build internal documentation">
+        <mkdir dir="${doc.dir}"/>
+        <javadoc destdir="${doc.dir}"
+                classpathref="compile.classpath"
+        >
+            <fileset dir="${src.dir}" includes="**/*.java"/>
+        </javadoc>
+    </target>
+
+    <!-- Clean up build system results -->
+    <target name="clean" description="Clean up build system results">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    
+    <target name="dbmanager" description="Start the HSQLDB manager">
+        <java
+            classname="org.hsqldb.util.DatabaseManagerSwing"
+            classpathref="run.classpath"
+            fork="yes"
+        >
+            <arg line="--user sa --url ${db.url}" />
+        </java>
+    </target>
+
+    <target name="startdb" description="Start the HSQLDB with the default params">
+        <java
+            classname="org.hsqldb.Server"
+            classpathref="run.classpath"
+            fork="yes"
+        >
+            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
+        </java>
+    </target>
+    
+</project>
+

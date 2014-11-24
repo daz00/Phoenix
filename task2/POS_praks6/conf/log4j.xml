@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+        
+  <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender"> 
+    <param name="Target" value="System.out"/> 
+    <layout class="org.apache.log4j.PatternLayout"> 
+      <param name="ConversionPattern" value="%-5p %c - %m%n"/> 
+    </layout> 
+  </appender> 
+
+  <appender name="fileAppender" class="org.apache.log4j.FileAppender">
+    <param name="File" value="log/templateApp.log"/>
+    <param name="Append" value="false"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d [%t] %p - %m%n"/>
+    </layout>
+  </appender>
+
+  <!-- Configure logging from our own classes to be on level "debug" -->
+  <category name="ee.ut.math.tvt.salessystem" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="consoleAppender" />
+    <appender-ref ref="fileAppender" />
+  </category>
+  
+  <!-- (When debugging something, e.g. some Hibernate behavior, it might be
+       useful to temporarily enable debug-level logging from Hibernate's classes -->
+  <!-- 
+  <category name="org.hibernate" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="consoleAppender" />
+    <appender-ref ref="fileAppender" />
+  </category>
+  -->
+
+
+  <!-- And logging from other classes to level "info" to cut down the log spamming -->
+  <root>
+    <priority value="info"/>
+    <appender-ref ref="consoleAppender"/>
+    <appender-ref ref="fileAppender"/>
+  </root>
+  
+
+</log4j:configuration>
