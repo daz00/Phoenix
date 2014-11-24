@@ -17,6 +17,9 @@
 
 	<property name="lib.dir" value="${basedir}/lib" />
 
+	<!--- Test -->
+	<property name="test.dir" value="${basedir}/test" />
+	<property name="build.test.dir" value="${build.dir}/test" />
 
 	<!-- database variables -->
 	<property name="data.dir" value="${basedir}/data" />
@@ -50,6 +53,11 @@
 		</fileset>
 	</path>
 
+	<path id="test.classpath">
+		<pathelement path="${build.test.dir}/" />
+		<path refid="run.classpath" />
+	</path>
+
 	<target name="build" description="Build the system">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${classes.dir}" />
@@ -66,6 +74,21 @@
 		<copy file="${basedir}/src/hibernate.cfg.xml" todir="${classes.dir}" overwrite="true" />
 	</target>
 
+	<target name="build-tests" depends="build" description="Builds the system">
+		<mkdir dir="${build.test.dir}" />
+		<javac srcdir="${test.dir}" destdir="${build.test.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.5" source="1.5" classpathref="run.classpath" />
+	</target>
+	
+	<target name="test" depends="build-tests" description="Runs template application">
+
+		<junit>
+			<classpath refid="test.classpath" />
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${build.test.dir}" includes="**/*.class" />
+			</batchtest>
+		</junit>
+	</target>
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
@@ -79,7 +102,7 @@
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 		</java>
 	</target>
-	
+
 
 	<target name="runc" depends="build" description="Run the application (console)">
 		<java classname="ee.ut.math.tvt.phoenix.Intro" classpathref="run.classpath" fork="yes">
@@ -165,7 +188,7 @@
 
 		</git>
 	</target>
-	
+
 	<!-- Database stuff -->
 
 	<target name="dbmanager" description="Start the HSQLDB manager">
