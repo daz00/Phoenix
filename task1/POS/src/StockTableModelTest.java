@@ -1,10 +1,7 @@
 import static org.junit.Assert.*;
-
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.junit.Test;
-
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
