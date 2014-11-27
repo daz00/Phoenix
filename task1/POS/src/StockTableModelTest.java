@@ -28,7 +28,7 @@ public class StockTableModelTest {
 		for (int j = i + 1; j < numberOfRows; j++) {
 		if (curStockItem.getName().equals(stockItemList.get(j).getName())) {
 		exists = true;
-		}
+			}
 		}
 		}
 		assertFalse(exists);
