@@ -7,6 +7,7 @@ import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
 
 public class StockTableModelTest {
+	
 
 	@Test
 	public void testValidateNameUniqueness() {
