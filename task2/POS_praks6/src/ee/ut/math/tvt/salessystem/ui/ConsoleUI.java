@@ -2,15 +2,19 @@ package ee.ut.math.tvt.salessystem.ui;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.Client;
+import ee.ut.math.tvt.salessystem.domain.data.Sale;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -38,6 +42,7 @@ public class ConsoleUI {
     /**
      * Run the sales system CLI.
      */
+    
     public void run() {
         try {
             // populate warehouse with goodies
@@ -132,7 +137,11 @@ public class ConsoleUI {
                 for(StockItem stockItem : cart) {
                     soldItems.add(new SoldItem(stockItem, stockItem.getQuantity()));
                 }
-                dc.submitCurrentPurchase(soldItems, selectedClient);
+                Sale sale = new Sale(soldItems);
+                sale.setClient(selectedClient);
+                sale.setSellingTime(new Date());
+
+                dc.registerSale(sale);
                 cart.clear();
             } catch (VerificationFailedException e) {
                 log.error(e.getMessage());

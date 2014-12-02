@@ -41,6 +41,11 @@ public class Sale implements DisplayableItem {
         this.soldItems = new HashSet<SoldItem>(goods);
         this.sellingTime = new Date();
     }
+    //Lisatud konstruktor
+    public Sale(Client client){
+        this.client=client;
+        this.soldItems = new HashSet<SoldItem>();
+    }
 
     public Client getClient() {
         return client;
