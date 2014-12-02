@@ -79,8 +79,8 @@
             debuglevel="lines,vars,source"
             encoding="utf-8"
             compiler="modern"
-            target="1.5"
-            source="1.5"
+            target="1.7"
+            source="1.7"
         >
             <classpath refid="compile.classpath"/>
             <compilerarg value="-Xlint:unchecked" />

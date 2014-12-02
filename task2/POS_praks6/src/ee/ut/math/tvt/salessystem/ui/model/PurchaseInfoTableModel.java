@@ -4,7 +4,10 @@ import ee.ut.math.tvt.salessystem.domain.data.Sale;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.SalesSystemException;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -16,14 +19,27 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	private static final Logger log = Logger.getLogger(PurchaseInfoTableModel.class);
 
 	private SalesSystemModel model;
+	
+	private Sale sale;
 
     public PurchaseInfoTableModel() {
         super(new String[] { "Id", "Name", "Price", "Quantity", "Sum"});
+	    this.sale=new Sale(new ArrayList<SoldItem>());
     }
 
 	public PurchaseInfoTableModel(SalesSystemModel model) {
 	    this();
 	    this.model = model;
+	    this.sale=new Sale(new ArrayList<SoldItem>());
+	}
+	
+
+	public Sale getSale() {
+		return sale;
+	}
+
+	public void setSale(Sale sale) {
+		this.sale = sale;
 	}
 
 	@Override
@@ -51,7 +67,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 			buffer.append(headers[i] + "\t");
 		buffer.append("\n");
 
-		for (final SoldItem item : rows) {
+		for (final SoldItem item : sale.getSoldItems()) {
 			buffer.append(item.getId() + "\t");
 			buffer.append(item.getName() + "\t");
 			buffer.append(item.getPrice() + "\t");
@@ -64,8 +80,8 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	}
 
 
-	public SoldItem getForStockItem(long stockItemId) {
-	    for (SoldItem item : rows) {
+	public SoldItem getStockItem(long stockItemId) {
+	    for (SoldItem item : sale.getSoldItems()) {
 	        if (item.getStockItem().getId().equals(stockItemId)) {
 	            return item;
 	        }
@@ -81,7 +97,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
         StockItem stockItem = soldItem.getStockItem();
         long stockItemId = stockItem.getId();
-        SoldItem existingItem = getForStockItem(stockItemId);
+        SoldItem existingItem = getStockItem(stockItemId);
 
         if (existingItem != null) {
             int totalQuantity = existingItem.getQuantity() + soldItem.getQuantity();
@@ -93,7 +109,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
         } else {
             validateQuantityInStock(soldItem.getStockItem(), soldItem.getQuantity());
-            rows.add(soldItem);
+            sale.addSoldItem(soldItem);
             log.debug("Added " + soldItem.getName()
                     + " quantity of " + soldItem.getQuantity());
         }
@@ -106,7 +122,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
      */
     public double getTotalPrice() {
         double price = 0.0;
-        for (SoldItem item : rows) {
+        for (SoldItem item : sale.getSoldItems()) {
             price += item.getSum();
         }
         return price;
@@ -124,18 +140,50 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
     }
 
-
     public static PurchaseInfoTableModel getEmptyTable() {
         return new PurchaseInfoTableModel();
     }
+    
+    public void clear() {
+        sale.getSoldItems().clear();
+        fireTableDataChanged();
+}
 
     /**
      * Replace the current contents of the table with the SoldItems of the given Sale.
      * (Used by the history details table in the HistoryTab).
      */
     public void showSale(Sale sale) {
-        this.rows = new ArrayList<SoldItem>(sale.getSoldItems());
+        this.sale = sale;
         fireTableDataChanged();
     }
+
+	@Override
+	public List<SoldItem> getTableRows() {
+		 List<SoldItem> rows = new ArrayList<SoldItem>(sale.getSoldItems());
+         return rows;
+	}
+
+	
+	@Override
+	public void addRow(SoldItem row) {
+            if(sale != null) {
+                    sale.addSoldItem(row);
+            }
+            fireTableDataChanged();
+    }
+
+	@Override
+	public SoldItem getRow(int index) {
+		return getTableRows().get(index);
+	}
+	
+	public void populateWithData(List<SoldItem> sales) {
+        if(sale != null) {
+                for(SoldItem item : sales) {
+                        sale.addSoldItem(item);
+                }
+        }
+}
 
 }
