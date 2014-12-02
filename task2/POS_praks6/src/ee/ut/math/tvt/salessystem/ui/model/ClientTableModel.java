@@ -11,7 +11,7 @@ import ee.ut.math.tvt.salessystem.domain.data.Client;
 public class ClientTableModel extends SalesSystemTableModel<Client> {
 	private static final long serialVersionUID = 1L;
 	
-	protected List<Client> rows;
+	private List<Client> rows;
 
 	public ClientTableModel() {
 		super(new String[] { "Id", "First name", "Discount"});

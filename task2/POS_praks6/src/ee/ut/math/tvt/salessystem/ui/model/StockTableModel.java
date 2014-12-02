@@ -16,7 +16,7 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 
 	private static final Logger log = Logger.getLogger(StockTableModel.class);
 	
-	protected List<StockItem> rows;
+	private List<StockItem> rows;
 
 	public StockTableModel() {
 		super(new String[] {"Id", "Name", "Price", "Quantity"});
@@ -38,28 +38,6 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		throw new IllegalArgumentException("Column index out of range");
 	}
 
-	/**
-	 * Add new stock item to table. If there already is a stock item with
-	 * same id, then existing item's quantity will be increased.
-	 * @param stockItem
-	 */
-	
-// might need to delete??
-	public void addItem(final StockItem stockItem) {
-		try {
-			StockItem item = getItemById(stockItem.getId());
-			item.setQuantity(item.getQuantity() + stockItem.getQuantity());
-			log.debug("Found existing item " + stockItem.getName()
-					+ " increased quantity by " + stockItem.getQuantity());
-		}
-		catch (NoSuchElementException e) {
-			rows.add(stockItem);
-			log.debug("Added " + stockItem.getName()
-					+ " quantity of " + stockItem.getQuantity());
-		}
-		fireTableDataChanged();
-	}
-	
 	public StockItem getItemById(long id) {
         for (StockItem item : rows){
                 if(item.getId()==id){

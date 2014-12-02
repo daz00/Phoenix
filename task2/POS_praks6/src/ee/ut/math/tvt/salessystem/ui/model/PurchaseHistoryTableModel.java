@@ -13,7 +13,7 @@ import ee.ut.math.tvt.salessystem.domain.data.Sale;
 public class PurchaseHistoryTableModel extends SalesSystemTableModel<Sale> {
 	private static final long serialVersionUID = 1L;
 
-	protected List<Sale> rows;
+	private List<Sale> rows;
 
 	private static DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"yyyy.MM.dd HH:mm:ss");

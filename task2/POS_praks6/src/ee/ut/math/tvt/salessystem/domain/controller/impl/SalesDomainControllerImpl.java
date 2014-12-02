@@ -104,7 +104,6 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         log.info("Added new stockItem : " + stockItem);
     }
 
-
     public void cancelCurrentPurchase() {
         log.info("Current purchase canceled");
     }
@@ -113,15 +112,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         log.info("New purchase started");
     }
 
-
-
     public void setModel(SalesSystemModel model) {
         this.model = model;
-    }
-
-
-    public Sale getSale(Long id) {
-        return (Sale) session.get(Sale.class, id);
     }
 
     @Override

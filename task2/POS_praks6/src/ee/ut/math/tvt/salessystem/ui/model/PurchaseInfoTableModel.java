@@ -177,13 +177,5 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	public SoldItem getRow(int index) {
 		return getTableRows().get(index);
 	}
-	
-	public void populateWithData(List<SoldItem> sales) {
-        if(sale != null) {
-                for(SoldItem item : sales) {
-                        sale.addSoldItem(item);
-                }
-        }
 }
 
-}
