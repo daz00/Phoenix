@@ -43,7 +43,8 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	 * same id, then existing item's quantity will be increased.
 	 * @param stockItem
 	 */
-
+	
+// might need to delete??
 	public void addItem(final StockItem stockItem) {
 		try {
 			StockItem item = getItemById(stockItem.getId());

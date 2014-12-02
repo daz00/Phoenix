@@ -7,10 +7,8 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.util.HibernateUtil;
-
 import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -66,41 +64,6 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         return (StockItem) session.get(StockItem.class, id);
     }
 
-    public void createStockItem(StockItem stockItem) {
-        // Begin transaction
-        Transaction tx = session.beginTransaction();
-        session.save(stockItem);
-        tx.commit();
-        model.getWarehouseTableModel().addRow(stockItem);
-        log.info("Added new stockItem : " + stockItem);
-    }
-
-
-    public void cancelCurrentPurchase() {
-        // XXX - Cancel current purchase
-        log.info("Current purchase canceled");
-    }
-
-    public void startNewPurchase() {
-        // XXX - Start new purchase
-        log.info("New purchase started");
-    }
-
-
-
-    public void setModel(SalesSystemModel model) {
-        this.model = model;
-    }
-
-
-    public Sale getSale(Long id) {
-        return (Sale) session.get(Sale.class, id);
-    }
-
-    @Override
-    public void endSession() {
-        HibernateUtil.closeSession();
-    }
 
     public void registerSale(Sale sale) {
 
@@ -125,8 +88,45 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         // end transaction
         tx.commit();
         model.getPurchaseHistoryTableModel().addRow(sale);
+        HibernateUtil.closeSession();
+        session=HibernateUtil.currentSession();
 
 
+    }
+
+
+    public void createStockItem(StockItem stockItem) {
+        // Begin transaction
+        Transaction tx = session.beginTransaction();
+        session.save(stockItem);
+        tx.commit();
+        model.getWarehouseTableModel().addRow(stockItem);
+        log.info("Added new stockItem : " + stockItem);
+    }
+
+
+    public void cancelCurrentPurchase() {
+        log.info("Current purchase canceled");
+    }
+
+    public void startNewPurchase() {
+        log.info("New purchase started");
+    }
+
+
+
+    public void setModel(SalesSystemModel model) {
+        this.model = model;
+    }
+
+
+    public Sale getSale(Long id) {
+        return (Sale) session.get(Sale.class, id);
+    }
+
+    @Override
+    public void endSession() {
+        HibernateUtil.closeSession();
     }
 
 }

@@ -80,7 +80,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	}
 
 
-	public SoldItem getStockItem(long stockItemId) {
+	public SoldItem getForStockItem(long stockItemId) {
 	    for (SoldItem item : sale.getSoldItems()) {
 	        if (item.getStockItem().getId().equals(stockItemId)) {
 	            return item;
@@ -97,7 +97,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
         StockItem stockItem = soldItem.getStockItem();
         long stockItemId = stockItem.getId();
-        SoldItem existingItem = getStockItem(stockItemId);
+        SoldItem existingItem = getForStockItem(stockItemId);
 
         if (existingItem != null) {
             int totalQuantity = existingItem.getQuantity() + soldItem.getQuantity();
